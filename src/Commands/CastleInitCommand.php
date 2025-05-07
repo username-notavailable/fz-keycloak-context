@@ -19,6 +19,7 @@ class CastleInitCommand extends Command
             ->setDescription('Init a castle')
             ->setHelp('Init a castle directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Project name (Laravels directory name).');
+            //->addOption('quiet', 'q', InputArgument::OPTIONAL, 'Quiet mode.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -27,7 +28,9 @@ class CastleInitCommand extends Command
         $castleDirectoryPath = FZKC_CONSOLE_BASE_DIR . DIRECTORY_SEPARATOR . 'laravels' . DIRECTORY_SEPARATOR . $castleName;
 
         if (!is_dir($castleDirectoryPath)) {
-            $output->writeln('Error !!!, castle "' . $castleName . '" not found');
+            if (!$input->getOption('quiet')) {
+                $output->writeln('>>> Castle directory "' . $castleName . '" not exists <<<');
+            }
             return Command::FAILURE;
         }
         else {
@@ -44,7 +47,9 @@ class CastleInitCommand extends Command
             }
         }
 
-        $output->writeln('>>> Init castle directory "' . $castleName . '" DONE <<<');
+        if (!$input->getOption('quiet')) {
+            $output->writeln('>>> Castle directory "' . $castleName . '" initialized <<<');
+        }
 
         return Command::SUCCESS;
     }
