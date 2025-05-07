@@ -1,0 +1,27 @@
+$ORIGIN castle.space.
+@	3600 IN	SOA sns.dns.icann.org. noc.dns.icann.org. (
+				2017042745 ; serial
+				7200       ; refresh (2 hours)
+				3600       ; retry (1 hour)
+				1209600    ; expire (2 weeks)
+				3600       ; minimum (1 hour)
+				)
+
+	3600 IN NS a.iana-servers.net.
+	3600 IN NS b.iana-servers.net.
+
+;;
+;;	If you start manually the castle webserver (for example with "php artisan octane:start..." or similar), keep in mind:
+;;
+;;	-	you must add a DNS entries here for the resolution of the host's "<castel's name>.castle.space" hostnames 
+;;		by the containers services (CONTAINERS -> HOST) [host.docker.internal]
+;;   
+;;	*** default host ip address is "172.28.22.1" (the fzkc network gateway) ***
+;;
+;;	-	you must add a DNS entry into /etc/hosts (with "127.0.0.1" as ip address) for the resolution of the containers services's hostnames 
+;;		by the host (HOST -> CONTAINERS)
+;;
+;; <castel's name>.castle.space.      IN  A   172.28.22.1
+;; <castel's name 2>.castle.space.    IN  A   172.28.22.1
+;; ...
+

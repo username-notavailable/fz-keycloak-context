@@ -1,0 +1,29 @@
+<?php
+
+### https://dev.to/robertobutti/building-a-command-line-tool-with-php-and-symfony-console-4n6g
+
+use Symfony\Component\Console\Application;
+
+require __DIR__ . '/vendor/autoload.php';
+
+define('FZKC_CONSOLE_BASE_DIR', __DIR__);
+
+/**
+ * Start the console application.
+ */
+$app = new Application('fzkc console', '1.0.0');
+$app->setDefaultCommand('hello');
+
+$commands = glob(__DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . '?*Command.php');
+
+if (count($commands) > 0) {
+    foreach ($commands as $idx => $class) {
+        $className = basename($class, '.php');
+
+        $commandNamespace = 'Fuzzy\\Fzkc\\Commands\\' . $className;
+
+        $app->add(new $commandNamespace);
+    }
+}
+
+$app->run();

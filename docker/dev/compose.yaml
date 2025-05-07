@@ -1,0 +1,144 @@
+services:
+  postgres:
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+      LANG: C.UTF-8
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --locale-provider=icu --icu-locale=und'
+    hostname: postgres.docker.space
+    dns:
+      - 172.28.22.8
+    image: postgres:17.2
+    restart: always
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data     
+    ports: 
+      - "5432:5432"
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.9
+
+  redis:
+    build:
+      context: ./../__dfiles/redis
+      dockerfile: Dockerfile
+    container_name: redis_container
+    hostname: redis.docker.space
+    dns:
+      - 172.28.22.8
+    restart: always
+    ports:
+      - "6379:6379"
+    depends_on:
+      - postgres
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.10
+
+  nginx:
+    build:
+      context: ./../__dfiles/nginx/
+      dockerfile: Dockerfile
+    container_name: nginx_container
+    #environment:
+      #NGINX_ENTRYPOINT_QUIET_LOGS: 1
+      #DNS_RECORD: "969b086a94ec02debe10ae16232f2ded"
+      #DNS_RECORD_NAME: "test.fuzzy-net.it"
+    hostname: nginx.docker.space
+    dns:
+      - 172.28.22.8
+    restart: always
+    volumes:
+      - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
+      - ./nginx/etc/nginx:/etc/nginx
+      - ./nginx/var/www:/var/www
+      - ./nginx/var/log:/var/log
+      #- ./../../laravels/backend/public:/backend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - postgres
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.11
+
+  keycloak:
+    build:
+      context: ./../__dfiles/keycloak
+      dockerfile: Dockerfile
+    container_name: keycloak_container
+    environment:
+      KC_HOSTNAME: keycloak.docker.space
+      KC_HTTP_ENABLED: "true"
+      KC_HTTP_HOST: "0.0.0.0"
+      KC_HTTP_PORT: 8880
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_DB_URL_HOST: postgres.docker.space
+      KC_DB_URL_PORT: 5432
+      KC_DB_URL_DATABASE: keycloak
+    hostname: keycloak.docker.space
+    dns:
+      - 172.28.22.8
+    restart: always
+    volumes:
+      - keycloak_opt:/opt/keycloak
+    ports:
+      - "8880:8880"
+      - "9000:9000"
+    depends_on:
+      - postgres
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.12
+    command: ["start", "--optimized"]
+
+  coredns:
+    container_name: coredns_container
+    hostname: coredns.docker.space
+    dns:
+      - 172.28.22.8
+    image: coredns/coredns:1.12.1
+    restart: always
+    volumes:
+      - ./coredns/conf:/conf
+    ports:
+      - "53:53"
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.8
+    entrypoint: /coredns -conf /conf/Corefile
+
+
+networks:
+  fzkc_dev_net01:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.22.0/24
+          gateway: 172.28.22.1
+
+volumes:
+  pgdata:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./postgres/var/lib/postgresql/data
+      o: bind
+
+  keycloak_opt:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./keycloak/opt/keycloak
+      o: bind
+  

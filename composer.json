@@ -1,0 +1,26 @@
+{
+    "name": "fuzzy/fzkc",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.2"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Fuzzy\\Fzkc\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Viviani Demetrio",
+            "email": "d.viviani@fuzzy-net.it"
+        }
+    ],
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    },
+}
