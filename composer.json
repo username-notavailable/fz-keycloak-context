@@ -17,10 +17,5 @@
             "email": "d.viviani@fuzzy-net.it"
         }
     ],
-    "minimum-stability": "stable",
-    "scripts": {
-        "post-create-project-cmd": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
-        ]
-    },
+    "minimum-stability": "stable"
 }

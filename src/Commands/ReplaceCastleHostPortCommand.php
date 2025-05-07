@@ -1,0 +1,59 @@
+<?php
+
+namespace Fuzzy\Fzkc\Commands;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+
+
+class ReplaceCastleHostPortCommand extends BaseConsoleCmd
+{
+    protected function configure()
+    {
+        $this
+            ->setName('replace:castle:host:port')
+            ->setDescription('Replace castle host port number')
+            ->setHelp('Replace "{%% CASTLE_PORT %%}" with the castle name into a file')
+            ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
+            ->addArgument('port', InputArgument::REQUIRED, 'Port number.')
+            ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $castleName = $input->getArgument('dirname');
+        $castlePort = $input->getArgument('port');
+        $castleDirectoryPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName);
+
+        if (!is_dir($castleDirectoryPath)) {
+            if (!$input->getOption('quiet')) {
+                $output->writeln('!!! Fzkc castle directory "' . $castleName . '" not exists !!!');
+            }
+
+            return Command::FAILURE;
+        }
+        else {
+            $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
+
+            if (is_file($targetPath)) {
+                file_put_contents($targetPath, preg_replace('@{%% CASTLE_PORT %%}@', $castlePort, file_get_contents($targetPath)));
+
+                if (!$input->getOption('quiet')) {
+                    $output->writeln("\n>>> \"{%% CASTLE_PORT %%}\" replaced with \"$castlePort\" into \"$targetPath\" <<<\n");
+                }
+        
+                return Command::SUCCESS;
+            }
+            else {
+                if (!$input->getOption('quiet')) {
+                    $output->writeln('!!! File "' . $targetPath . '" not exists !!!');
+                }
+
+                return Command::FAILURE;
+            }
+        }
+    }
+}
+

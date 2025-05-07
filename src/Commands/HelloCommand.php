@@ -20,7 +20,7 @@ class HelloCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('Hello ' . get_current_user());
+        $output->writeln("\n>>> Hello " . get_current_user() . " <<<\n");
 
         return Command::SUCCESS;
     }

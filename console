@@ -6,13 +6,13 @@ use Symfony\Component\Console\Application;
 
 require __DIR__ . '/vendor/autoload.php';
 
-define('FZKC_CONSOLE_BASE_DIR', __DIR__);
+define('FZKC_CONSOLE_BASE_PATH', __DIR__);
 
 /**
  * Start the console application.
  */
 $app = new Application('fzkc console', '1.0.0');
-$app->setDefaultCommand('hello');
+$app->setDefaultCommand('list');
 
 $commands = glob(__DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . '?*Command.php');
 
