@@ -5,6 +5,7 @@ namespace Fuzzy\Fzkc\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 
@@ -22,40 +23,18 @@ class CastleNewLaravelWebCommand extends BaseConsoleCmd
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $castleName = $input->getArgument('dirname');
-        $castleType = "fzkc/laravelweb";
-        $castlePort = $input->getArgument('port');
-        $castleDirectoryPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName);
+        $castleNewInput = new ArrayInput([
+            'command' => 'castle:new',
+            'dirname'    => $input->getArgument('dirname'),
+            'type'  => "fzkc/laravelweb",
+            'port' => $input->getArgument('port')
+        ]);
 
-        if (is_dir($castleDirectoryPath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc castle directory "' . $castleName . '" already exists !!!');
-            }
+        $castleNewInput->setInteractive(false);
 
-            return Command::FAILURE;
-        }
-        else {
-            $resultCode = null;
+        $returnCode = $this->getApplication()->doRun($castleNewInput, $output);
 
-            if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Fzkc install castle \"$castleName\" of type \"$castleType\"...\n");
-            }
-
-            chdir($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels'));
-
-            putenv("CASTLE_NAME=$castleName");
-            putenv("CASTLE_PORT=$castlePort");
-
-            system('composer create-project "' . $castleType . '" "' . $castleName . '"', $resultCode);
-
-            return $resultCode === 0 ? Command::SUCCESS : Command::FAILURE;
-        }
-
-        if (!$input->getOption('quiet')) {
-            $output->writeln("\n>>> Fzkg castle directory \"$castleName\" initialized <<<\n");
-        }
-
-        return Command::SUCCESS;
+        return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
     }
 }
 

@@ -15,8 +15,9 @@ class CastleRunDevCommand extends BaseConsoleCmd
         $this
             ->setName('castle:run:dev')
             ->setDescription('Start a castle docker dev environment')
-            ->setHelp('Run "docker-compose up" from the castle _docker dev directory')
-            ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).');
+            ->setHelp('Run "docker-compose up" from the castle _docker dev directory\n\t\"cmdline\" argument example: php console castle:run:dev --cmdline=\"-d --force-recreate\"')
+            ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
+            ->addOption('cmdline', null, InputArgument::OPTIONAL, '"docker-compose up" arguments and options.', '');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -33,7 +34,7 @@ class CastleRunDevCommand extends BaseConsoleCmd
             return Command::FAILURE;
         }
         else {
-            $resultCode = null;
+            $returnCode = null;
 
             if (!$input->getOption('quiet')) {
                 $output->writeln("\n>>> Fzkc castle \"$castleName\" docker dev environment [$yamlFilePath]...\n");
@@ -41,9 +42,9 @@ class CastleRunDevCommand extends BaseConsoleCmd
 
             chdir(dirname($yamlFilePath));
 
-            system('docker-compose up', $resultCode);
+            system('docker-compose up ' . $input->getOption('cmdline'), $returnCode);
 
-            return $resultCode === 0 ? Command::SUCCESS : Command::FAILURE;
+            return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
         }
     }
 }

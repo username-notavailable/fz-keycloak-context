@@ -5,6 +5,7 @@ namespace Fuzzy\Fzkc\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 
 class RunDevCommand extends BaseConsoleCmd
@@ -14,7 +15,9 @@ class RunDevCommand extends BaseConsoleCmd
         $this
             ->setName('run:dev')
             ->setDescription('Start fzkc docker dev environment')
-            ->setHelp('Run "docker-compose up" from fzkc docker dev directory');
+            ->setHelp("Run \"docker-compose up\" from fzkc docker dev directory\n\t\"cmdline\" argument example: php console run:dev --cmdline=\"-d --force-recreate\"")
+            ->addOption('cmdline', null, InputArgument::OPTIONAL, '"docker-compose up" arguments and options.', '')
+            ->ignoreValidationErrors();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -29,7 +32,7 @@ class RunDevCommand extends BaseConsoleCmd
             return Command::FAILURE;
         }
         else {
-            $resultCode = null;
+            $returnCode = null;
 
             if (!$input->getOption('quiet')) {
                 $output->writeln("\n>>> Fzkc docker dev environment [$yamlFilePath]...\n");
@@ -37,9 +40,9 @@ class RunDevCommand extends BaseConsoleCmd
 
             chdir(dirname($yamlFilePath));
 
-            system('docker-compose up', $resultCode);
+            system('docker-compose up ' . $input->getOption('cmdline'), $returnCode);
 
-            return $resultCode === 0 ? Command::SUCCESS : Command::FAILURE;
+            return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
         }
     }
 }

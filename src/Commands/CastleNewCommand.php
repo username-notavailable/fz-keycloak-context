@@ -36,7 +36,7 @@ class CastleNewCommand extends BaseConsoleCmd
             return Command::FAILURE;
         }
         else {
-            $resultCode = null;
+            $returnCode = null;
 
             if (!$input->getOption('quiet')) {
                 $output->writeln("\n>>> Fzkc install castle \"$castleName\" of type \"$castleType\"...\n");
@@ -47,13 +47,13 @@ class CastleNewCommand extends BaseConsoleCmd
             putenv("CASTLE_NAME=$castleName");
             putenv("CASTLE_PORT=$castlePort");
 
-            system('composer create-project "' . $castleType . '" "' . $castleName . '"', $resultCode);
+            system('composer create-project "' . $castleType . '" "' . $castleName . '"', $returnCode);
 
-            return $resultCode === 0 ? Command::SUCCESS : Command::FAILURE;
+            return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
         }
 
         if (!$input->getOption('quiet')) {
-            $output->writeln("\n>>> Fzkg castle directory \"$castleName\" initialized <<<\n");
+            $output->writeln("\n>>> Fzkg castle directory \"$castleName\" installed <<<\n");
         }
 
         return Command::SUCCESS;
