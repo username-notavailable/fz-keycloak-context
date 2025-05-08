@@ -15,9 +15,10 @@ class RunDevCommand extends BaseConsoleCmd
         $this
             ->setName('run:dev')
             ->setDescription('Start fzkc docker dev environment')
-            ->setHelp("Run \"docker-compose up\" from fzkc docker dev directory\n\t\"cmdline\" argument example: php console run:dev --cmdline=\"-d --force-recreate\"")
-            ->addOption('cmdline', null, InputArgument::OPTIONAL, '"docker-compose up" arguments and options.', '')
-            ->ignoreValidationErrors();
+            ->setHelp("Run \"docker compose up\" from fzkc docker dev directory")
+            ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose up" command.', '')
+            ->addOption('up', null, InputArgument::OPTIONAL, '"up" arguments and options in "docker compose up" command.', '');
+            //->ignoreValidationErrors();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -40,7 +41,9 @@ class RunDevCommand extends BaseConsoleCmd
 
             chdir(dirname($yamlFilePath));
 
-            system('docker-compose up ' . $input->getOption('cmdline'), $returnCode);
+            putenv('COMPOSE_PROJECT_NAME', basename(FZKC_CONSOLE_BASE_PATH) . '_dev');
+
+            system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 
             return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
         }

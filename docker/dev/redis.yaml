@@ -1,0 +1,17 @@
+services:
+  redis:
+    build:
+      context: ./../__dfiles/redis
+      dockerfile: Dockerfile
+    container_name: redis_container
+    hostname: redis.docker.space
+    dns:
+      - 172.28.22.8
+    restart: always
+    ports:
+      - "6379:6379"
+    depends_on:
+      - postgres
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.10

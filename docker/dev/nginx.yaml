@@ -1,0 +1,30 @@
+services:
+  nginx:
+    build:
+      context: ./../__dfiles/nginx/
+      dockerfile: Dockerfile
+    container_name: nginx_container
+    #environment:
+      #NGINX_ENTRYPOINT_QUIET_LOGS: 1
+      #DNS_RECORD: "969b086a94ec02debe10ae16232f2ded"
+      #DNS_RECORD_NAME: "test.fuzzy-net.it"
+    hostname: nginx.docker.space
+    dns:
+      - 172.28.22.8
+    restart: always
+    volumes:
+      - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
+      - ./nginx/etc/nginx:/etc/nginx
+      - ./nginx/var/www:/var/www
+      - ./nginx/var/log:/var/log
+      #- ./../../laravels/backend/public:/backend
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - postgres
+    networks:
+      fzkc_dev_net01:
+        ipv4_address: 172.28.22.11
+
+  
