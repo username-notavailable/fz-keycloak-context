@@ -17,13 +17,13 @@ services:
     ports:
       - "53:53"
     networks:
-      fzkc-net01:
+      fzkc_net01:
         ipv4_address: 172.28.22.8
     entrypoint: /coredns -conf /conf/Corefile
 
 
 networks:
-  fzkc-net01:
+  fzkc_net01:
     ipam:
       driver: default
       config:
@@ -42,7 +42,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./keycloak/opt
+      device: ./keycloak/opt/keycloak
       o: bind
 
   nginx_etc:
