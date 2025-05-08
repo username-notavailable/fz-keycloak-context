@@ -1,10 +1,6 @@
+/dev/keycloak/opt/keycloak/*
+!/dev/keycloak/opt/keycloak/.gitkeep
 /dev/nginx/var/log/*
-!/dev/nginx/var/log/.gitkeep
 !/dev/nginx/var/log/nginx/
 /dev/postgres/var/lib/postgresql/data/*
 !/dev/postgres/var/lib/postgresql/data/.gitkeep
-
-/prod/nginx/var/log/*
-!/prod/nginx/var/log/.gitkeep
-/prod/postgres/var/lib/postgresql/data/*
-!/prod/postgres/var/lib/postgresql/data/.gitkeep
