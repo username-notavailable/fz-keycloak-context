@@ -14,8 +14,9 @@ services:
     restart: always
     volumes:
       - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
-      - nginx_etc:/etc/nginx
-      - nginx_var:/var
+      - nginx-etc:/etc/nginx
+      - nginx-var-log:/var/log
+      - nginx-var-www:/var/www
       #- ./../../laravels/backend/public:/backend
     ports:
       - "80:80"
@@ -23,7 +24,7 @@ services:
     depends_on:
       - postgres
     networks:
-      fzkc_net01:
+      fzkc-net01:
         ipv4_address: 172.28.22.11
 
   

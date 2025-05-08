@@ -1,14 +1,5 @@
 vendor/
 composer.lock
-docker/dev/keycloak/opt/keycloak/*
-!docker/dev/keycloak/opt/keycloak/.gitkeep
-
-!docker/dev/nginx/etc/nginx/conf.d/
-docker/dev/nginx/var/log/*
-!docker/dev/nginx/var/log/nginx/
-docker/dev/nginx/var/www/*
-!docker/dev/nginx/var/www/.gitkeep
-docker/dev/nginx/etc/nginx/certs/*
 
 docker/dev/postgres/var/lib/postgresql/data/*
 !docker/dev/postgres/var/lib/postgresql/data/.gitkeep

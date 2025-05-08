@@ -23,13 +23,15 @@ services:
       - 172.28.22.8
     restart: always
     volumes:
-      - keycloak_opt:/opt/keycloak
+      - keycloak-conf:/opt/keycloak/conf
+      - keycloak-providers:/opt/keycloak/providers
+      - keycloak-providers:/opt/keycloak/themes
     ports:
       - "8880:8880"
       - "9000:9000"
     depends_on:
       - postgres
     networks:
-      fzkc_net01:
+      fzkc-net01:
         ipv4_address: 172.28.22.12
     command: ["start", "--optimized"]

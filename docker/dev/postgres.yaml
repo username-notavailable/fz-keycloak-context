@@ -19,6 +19,6 @@ services:
     ports: 
       - "5432:5432"
     networks:
-      fzkc_net01:
+      fzkc-net01:
         ipv4_address: 172.28.22.9
   

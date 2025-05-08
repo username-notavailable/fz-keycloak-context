@@ -5,6 +5,74 @@ include:
   - keycloak.yaml
 
 services:
+  # postgres:
+  #   container_name: postgres_container
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: postgres
+  #     PGDATA: /var/lib/postgresql/data/pgdata
+  #     LANG: C.UTF-8
+  #     POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --locale-provider=icu --icu-locale=und'
+  #   hostname: postgres.docker.space
+  #   dns:
+  #     - 172.28.22.8
+  #   image: postgres:17.2
+  #   restart: always
+  #   volumes:
+  #     - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  #     - pgdata:/var/lib/postgresql/data     
+  #   ports: 
+  #     - "5432:5432"
+  #   networks:
+  #     fzkc-net01:
+  #       ipv4_address: 172.28.22.9
+
+  # nginx:
+  #   build:
+  #     context: ./../__dfiles/nginx/
+  #     dockerfile: Dockerfile
+  #   container_name: nginx_container
+  #   #environment:
+  #     #NGINX_ENTRYPOINT_QUIET_LOGS: 1
+  #     #DNS_RECORD: "969b086a94ec02debe10ae16232f2ded"
+  #     #DNS_RECORD_NAME: "test.fuzzy-net.it"
+  #   hostname: nginx.docker.space
+  #   dns:
+  #     - 172.28.22.8
+  #   restart: always
+  #   volumes:
+  #     - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
+  #     - nginx-etc:/etc/nginx
+  #     - nginx-var-log:/var/log
+  #     - nginx-var-www:/var/www
+  #     #- ./../../laravels/backend/public:/backend
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     fzkc-net01:
+  #       ipv4_address: 172.28.22.11
+
+  # redis:
+  #   build:
+  #     context: ./../__dfiles/redis
+  #     dockerfile: Dockerfile
+  #   container_name: redis_container
+  #   hostname: redis.docker.space
+  #   dns:
+  #     - 172.28.22.8
+  #   restart: always
+  #   ports:
+  #     - "6379:6379"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     fzkc-net01:
+  #       ipv4_address: 172.28.22.10
+
   coredns:
     container_name: coredns_container
     hostname: coredns.docker.space
@@ -17,13 +85,13 @@ services:
     ports:
       - "53:53"
     networks:
-      fzkc_net01:
+      fzkc-net01:
         ipv4_address: 172.28.22.8
     entrypoint: /coredns -conf /conf/Corefile
 
 
 networks:
-  fzkc_net01:
+  fzkc-net01:
     ipam:
       driver: default
       config:
@@ -38,24 +106,45 @@ volumes:
       device: ./postgres/var/lib/postgresql/data
       o: bind
 
-  keycloak_opt:
+  keycloak-conf:
     driver: local
     driver_opts:
       type: none
-      device: ./keycloak/opt/keycloak
+      device: ./keycloak/opt/keycloak/conf
       o: bind
 
-  nginx_etc:
+  keycloak-providers:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./keycloak/opt/keycloak/providers
+      o: bind
+
+  keycloak-themes:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./keycloak/opt/keycloak/themes
+      o: bind
+
+  nginx-etc:
     driver: local
     driver_opts:
       type: none
       device: ./nginx/etc/nginx
       o: bind
 
-  nginx_var:
+  nginx-var-log:
     driver: local
     driver_opts:
       type: none
-      device: ./nginx/var
+      device: ./nginx/var/log
+      o: bind
+
+  nginx-var-www:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./nginx/var/www
       o: bind
   
