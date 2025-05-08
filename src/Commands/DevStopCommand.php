@@ -35,12 +35,12 @@ class DevStopCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Stop fzkc docker dev environment [$yamlFilePath] <<<\n");
+                $output->writeln(">>> Stop fzkc docker dev environment [$yamlFilePath] <<<");
             }
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '-dev');
+            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH));
 
             system('docker ' . $input->getOption('docker') . ' compose down ' . $input->getOption('down'), $returnCode);
 

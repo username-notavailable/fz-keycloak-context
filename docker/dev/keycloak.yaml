@@ -3,7 +3,7 @@ services:
     build:
       context: ./../__dfiles/keycloak
       dockerfile: Dockerfile
-    container_name: keycloak_container
+    container_name: ${COMPOSE_PROJECT_NAME}_keycloak_container
     environment:
       KC_HOSTNAME: keycloak.docker.space
       KC_HTTP_ENABLED: "true"

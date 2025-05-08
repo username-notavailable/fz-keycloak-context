@@ -35,12 +35,12 @@ class DevStartCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Fzkc docker dev environment [$yamlFilePath]...\n");
+                $output->writeln(">>> Start fzkc docker dev environment [$yamlFilePath]...");
             }
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '-dev');
+            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH));
 
             system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 

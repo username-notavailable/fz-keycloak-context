@@ -3,7 +3,7 @@ services:
     build:
       context: ./../__dfiles/redis
       dockerfile: Dockerfile
-    container_name: redis_container
+    container_name: ${COMPOSE_PROJECT_NAME}_redis_container
     hostname: redis.docker.space
     dns:
       - 172.28.22.8
