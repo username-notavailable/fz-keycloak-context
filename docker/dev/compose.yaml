@@ -42,6 +42,20 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./keycloak/opt/keycloak
+      device: ./keycloak/opt
+      o: bind
+
+  nginx_etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./nginx/etc/nginx
+      o: bind
+
+  nginx_var:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./nginx/var
       o: bind
   

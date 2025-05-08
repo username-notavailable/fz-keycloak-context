@@ -43,7 +43,7 @@ class CastleRunDevCommand extends BaseConsoleCmd
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '_' . $input->getArgument('dirname') .'_dev');
+            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '-' . $input->getArgument('dirname') .'-dev');
 
             system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 
