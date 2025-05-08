@@ -23,7 +23,7 @@ services:
     depends_on:
       - postgres
     networks:
-      fzkc_dev_net01:
+      fzkc-net01:
         ipv4_address: 172.28.22.11
 
   

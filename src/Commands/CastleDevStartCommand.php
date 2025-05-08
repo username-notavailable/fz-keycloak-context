@@ -8,12 +8,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class CastleRunDevCommand extends BaseConsoleCmd
+class CastleDevStartCommand extends BaseConsoleCmd
 {
     protected function configure()
     {
         $this
-            ->setName('castle:run:dev')
+            ->setName('castle:dev:start')
             ->setDescription('Start a castle docker dev environment')
             ->setHelp('Run "docker compose up" from the castle _docker dev directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')

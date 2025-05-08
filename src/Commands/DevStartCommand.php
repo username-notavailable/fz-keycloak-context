@@ -8,17 +8,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class RunDevCommand extends BaseConsoleCmd
+class DevStartCommand extends BaseConsoleCmd
 {
     protected function configure()
     {
         $this
-            ->setName('run:dev')
-            ->setDescription('Start fzkc docker dev environment')
+            ->setName('dev:start')
+            ->setDescription('Start fzkc project dev environment')
             ->setHelp("Run \"docker compose up\" from fzkc docker dev directory")
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose up" command.', '')
             ->addOption('up', null, InputArgument::OPTIONAL, '"up" arguments and options in "docker compose up" command.', '');
-            //->ignoreValidationErrors();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
