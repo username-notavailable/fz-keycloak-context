@@ -41,7 +41,7 @@ class RunDevCommand extends BaseConsoleCmd
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME', basename(FZKC_CONSOLE_BASE_PATH) . '_dev');
+            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '_dev');
 
             system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 

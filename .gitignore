@@ -3,6 +3,7 @@ composer.lock
 docker/dev/keycloak/opt/keycloak/*
 !docker/dev/keycloak/opt/keycloak/.gitkeep
 
+!docker/dev/nginx/etc/nginx/conf.d/
 docker/dev/nginx/var/log/*
 !docker/dev/nginx/var/log/nginx/
 docker/dev/nginx/var/www/*

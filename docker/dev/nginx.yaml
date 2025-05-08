@@ -15,8 +15,6 @@ services:
     volumes:
       - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
       - ./nginx/etc/nginx:/etc/nginx
-      - ./nginx/var/www:/var/www
-      - ./nginx/var/log:/var/log
       #- ./../../laravels/backend/public:/backend
     ports:
       - "80:80"
