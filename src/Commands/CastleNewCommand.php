@@ -5,6 +5,7 @@ namespace Fuzzy\Fzkc\Commands;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 
@@ -53,14 +54,47 @@ class CastleNewCommand extends BaseConsoleCmd
 
             system('composer create-project "' . $castleType . '" "' . $castleName . '"', $returnCode);
 
-            return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;
-        }
+            if ($returnCode === 0) {
+                $commandInput = new ArrayInput([
+                    'command' => 'replace:castle:name',
+                    'dirname'    => $input->getArgument('dirname'),
+                    'path'  => "_docker/dev/.env"
+                ]);
+        
+                $commandInput->setInteractive(false);
+        
+                $this->getApplication()->doRun($commandInput, $output);
 
-        if (!$input->getOption('quiet')) {
-            $output->writeln("\n>>> Fzkg castle [$castleName] installed <<<");
-        }
+                $commandInput = new ArrayInput([
+                    'command' => 'replace:castle:host:port',
+                    'dirname'    => $input->getArgument('dirname'),
+                    'port' => $castlePort,
+                    'path'  => "_docker/dev/.env"
+                ]);
+        
+                $commandInput->setInteractive(false);
+        
+                $this->getApplication()->doRun($commandInput, $output);
 
-        return Command::SUCCESS;
+                $commandInput = new ArrayInput([
+                    'command' => 'replace:project:name',
+                    'dirname'    => $input->getArgument('dirname'),
+                    'path'  => "_docker/dev/.env"
+                ]);
+        
+                $commandInput->setInteractive(false);
+        
+                $this->getApplication()->doRun($commandInput, $output);
+
+                if (!$input->getOption('quiet')) {
+                    $output->writeln("\n>>> Fzkg castle [$castleName] installed <<<");
+                }
+
+                return Command::SUCCESS;
+            }
+
+            return Command::FAILURE;
+        }
     }
 }
 
