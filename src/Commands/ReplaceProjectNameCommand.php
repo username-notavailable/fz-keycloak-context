@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class ReplaceProjectNameCommand extends BaseConsoleCmd
+class ReplaceProjectNameCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
@@ -37,12 +37,12 @@ class ReplaceProjectNameCommand extends BaseConsoleCmd
             $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
 
             if (is_file($targetPath)) {
-                file_put_contents($targetPath, preg_replace('@{%% FZKC_PROJECT_NAME %%}@', $castleName, file_get_contents($targetPath)));
+                file_put_contents($targetPath, preg_replace('@{%% FZKC_PROJECT_NAME %%}@', $projectName, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
                     $output->writeln(">>> Fzkc project [$projectName]");
                     $output->writeln(">>> Fzkc castle [$castleName]");
-                    $output->writeln(">>> \"{%% FZKC_PROJECT_NAME %%}\" replaced with \"$castleName\" into \"$targetPath\" <<<");
+                    $output->writeln(">>> \"{%% FZKC_PROJECT_NAME %%}\" replaced with \"$projectName\" into \"$targetPath\" <<<");
                 }
         
                 return Command::SUCCESS;

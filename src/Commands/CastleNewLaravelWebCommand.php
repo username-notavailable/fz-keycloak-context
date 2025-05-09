@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class CastleNewLaravelWebCommand extends BaseConsoleCmd
+class CastleNewLaravelWebCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {

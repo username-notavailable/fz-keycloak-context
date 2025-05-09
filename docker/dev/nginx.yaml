@@ -4,7 +4,11 @@ services:
       context: ./../__dfiles/nginx/
       dockerfile: Dockerfile
     container_name: ${FZKC_PROJECT_NAME}-nginx-container
-    #environment:
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
       #NGINX_ENTRYPOINT_QUIET_LOGS: 1
       #DNS_RECORD: "969b086a94ec02debe10ae16232f2ded"
       #DNS_RECORD_NAME: "test.fuzzy-net.it"

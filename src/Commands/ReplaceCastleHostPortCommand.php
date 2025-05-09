@@ -8,14 +8,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class ReplaceCastleHostPortCommand extends BaseConsoleCmd
+class ReplaceCastleHostPortCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
         $this
             ->setName('replace:castle:host:port')
             ->setDescription('Replace castle host port number')
-            ->setHelp('Replace "{%% FZKC_CASTLE_PORT %%}" with the castle name into a file')
+            ->setHelp('Replace "{%% FZKC_CASTLE_PORT %%}" with the castle host port into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('port', InputArgument::REQUIRED, 'Port number.')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class CastleNewCommand extends BaseConsoleCmd
+class CastleNewCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
@@ -48,17 +48,22 @@ class CastleNewCommand extends BaseConsoleCmd
 
             chdir($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels'));
 
-            putenv("FZKC_CASTLE_NAME=$castleName");
-            putenv("FZKC_CASTLE_PORT=$castlePort");
-            putenv("FZKC_PROJECT_NAME=$projectName");
+            putenv('COMPOSE_PROJECT_NAME=' . $projectName);
+
+            $this->setCastleEnvVars($projectName, $castleName, $castlePort);
 
             system('composer create-project "' . $castleType . '" "' . $castleName . '"', $returnCode);
 
             if ($returnCode === 0) {
+                if ($input->getOption('quiet')) {
+                    $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+                }
+
                 $commandInput = new ArrayInput([
                     'command' => 'replace:castle:name',
                     'dirname'    => $input->getArgument('dirname'),
-                    'path'  => "_docker/dev/.env"
+                    'path'  => "_docker/dev/.env",
+                    '-q' => true
                 ]);
         
                 $commandInput->setInteractive(false);
@@ -69,7 +74,8 @@ class CastleNewCommand extends BaseConsoleCmd
                     'command' => 'replace:castle:host:port',
                     'dirname'    => $input->getArgument('dirname'),
                     'port' => $castlePort,
-                    'path'  => "_docker/dev/.env"
+                    'path'  => "_docker/dev/.env",
+                    '-q' => true
                 ]);
         
                 $commandInput->setInteractive(false);
@@ -79,7 +85,8 @@ class CastleNewCommand extends BaseConsoleCmd
                 $commandInput = new ArrayInput([
                     'command' => 'replace:project:name',
                     'dirname'    => $input->getArgument('dirname'),
-                    'path'  => "_docker/dev/.env"
+                    'path'  => "_docker/dev/.env",
+                    '-q' => true
                 ]);
         
                 $commandInput->setInteractive(false);

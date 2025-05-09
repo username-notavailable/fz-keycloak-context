@@ -1,7 +1,11 @@
 services:
   postgres:
     container_name: ${FZKC_PROJECT_NAME}-postgres-container
+    env_file:
+      - ./.env
     environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres

@@ -1,6 +1,11 @@
 services:
   coredns:
     container_name: ${FZKC_PROJECT_NAME}-coredns-container
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
     hostname: coredns.${FZKC_PROJECT_NAME}.space
     dns:
       - 127.0.0.1

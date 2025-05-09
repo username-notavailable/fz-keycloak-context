@@ -4,6 +4,11 @@ services:
       context: ./../__dfiles/redis
       dockerfile: Dockerfile
     container_name: ${FZKC_PROJECT_NAME}-redis-container
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
     hostname: redis.${FZKC_PROJECT_NAME}.space
     dns:
       - ${FZKC_NETWORK_DNS_IP}

@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class ReplaceCastleNameCommand extends BaseConsoleCmd
+class ReplaceCastleNameCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {

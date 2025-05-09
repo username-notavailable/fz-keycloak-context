@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class CastleDevStopCommand extends BaseConsoleCmd
+class CastleDevStopCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
@@ -47,9 +47,8 @@ class CastleDevStopCommand extends BaseConsoleCmd
             chdir(dirname($yamlFilePath));
 
             putenv('COMPOSE_PROJECT_NAME=' . $projectName);
-            putenv("FZKC_PROJECT_NAME=$projectName");
-            putenv("FZKC_CASTLE_NAME=$castleName");
-            // "FZKC_CASTLE_PORT" set by .env 
+            
+            $this->setCastleEnvVars($projectName, $castleName, null);
 
             system('docker ' . $input->getOption('docker') . ' compose down ' . $input->getOption('down'), $returnCode);
 

@@ -4,7 +4,11 @@ services:
       context: ./../__dfiles/keycloak
       dockerfile: Dockerfile
     container_name: ${FZKC_PROJECT_NAME}-keycloak-container
+    env_file:
+      - ./.env
     environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
       KC_HOSTNAME: keycloak.${FZKC_PROJECT_NAME}.space
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: "0.0.0.0"
