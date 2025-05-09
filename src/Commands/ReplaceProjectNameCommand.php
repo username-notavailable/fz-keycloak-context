@@ -40,8 +40,6 @@ class ReplaceProjectNameCommand extends BaseCastleConsoleCmd
                 file_put_contents($targetPath, preg_replace('@{%% FZKC_PROJECT_NAME %%}@', $projectName, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln(">>> Fzkc project [$projectName]");
-                    $output->writeln(">>> Fzkc castle [$castleName]");
                     $output->writeln(">>> \"{%% FZKC_PROJECT_NAME %%}\" replaced with \"$projectName\" into \"$targetPath\" <<<");
                 }
         

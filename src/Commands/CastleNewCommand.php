@@ -94,7 +94,7 @@ class CastleNewCommand extends BaseCastleConsoleCmd
                 $this->getApplication()->doRun($commandInput, $output);
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln("\n>>> Fzkg castle [$castleName] installed <<<");
+                    $output->writeln("\n>>> Castle [$castleName] of type [$castleType] installed <<<\n");
                 }
 
                 return Command::SUCCESS;

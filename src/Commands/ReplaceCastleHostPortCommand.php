@@ -42,8 +42,6 @@ class ReplaceCastleHostPortCommand extends BaseCastleConsoleCmd
                 file_put_contents($targetPath, preg_replace('@{%% FZKC_CASTLE_PORT %%}@', $castlePort, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln(">>> Fzkc project [$projectName]");
-                    $output->writeln(">>> Fzkc castle [$castleName]");
                     $output->writeln(">>> \"{%% FZKC_CASTLE_PORT %%}\" replaced with \"$castlePort\" into \"$targetPath\" <<<");
                 }
         
