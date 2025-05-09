@@ -1,0 +1,16 @@
+services:
+  coredns:
+    container_name: ${FZKC_PROJECT_NAME}-coredns-container
+    hostname: coredns.${FZKC_PROJECT_NAME}.space
+    dns:
+      - 127.0.0.1
+    image: coredns/coredns:1.12.1
+    restart: always
+    volumes:
+      - ./coredns/conf:/conf
+    ports:
+      - "${FZKC_EXPOSED_PORT_DNS}:53"
+    networks:
+      fzkc-net01:
+        ipv4_address: ${FZKC_NETWORK_DNS_IP}
+    entrypoint: /coredns -conf /conf/Corefile

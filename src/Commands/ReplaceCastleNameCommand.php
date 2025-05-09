@@ -15,7 +15,7 @@ class ReplaceCastleNameCommand extends BaseConsoleCmd
         $this
             ->setName('replace:castle:name')
             ->setDescription('Replace castle name')
-            ->setHelp('Replace "{%% CASTLE_NAME %%}" with the castle name into a file')
+            ->setHelp('Replace "{%% FZ_CASTLE_NAME %%}" with the castle name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');
     }
@@ -24,6 +24,7 @@ class ReplaceCastleNameCommand extends BaseConsoleCmd
     {
         $castleName = $input->getArgument('dirname');
         $castleDirectoryPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName);
+        $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (!is_dir($castleDirectoryPath)) {
             if (!$input->getOption('quiet')) {
@@ -36,10 +37,12 @@ class ReplaceCastleNameCommand extends BaseConsoleCmd
             $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
 
             if (is_file($targetPath)) {
-                file_put_contents($targetPath, preg_replace('@{%% CASTLE_NAME %%}@', $castleName, file_get_contents($targetPath)));
+                file_put_contents($targetPath, preg_replace('@{%% FZ_CASTLE_NAME %%}@', $castleName, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln("\n>>> \"{%% CASTLE_NAME %%}\" replaced with \"$castleName\" into \"$targetPath\" <<<\n");
+                    $output->writeln(">>> Fzkc project [$projectName]");
+                    $output->writeln(">>> Fzkc castle [$castleName]");
+                    $output->writeln(">>> \"{%% FZ_CASTLE_NAME %%}\" replaced with \"$castleName\" into \"$targetPath\" <<<");
                 }
         
                 return Command::SUCCESS;

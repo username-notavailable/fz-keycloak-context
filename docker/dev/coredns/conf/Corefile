@@ -1,23 +1,17 @@
 .:53 {
-    forward . 8.8.8.8 4.4.4.4
+    forward . 8.8.8.8 8.8.4.4
     log
     errors
 }
 
-docker.space:53 {
-    file /conf/db.docker.space
-    log
-    errors
-}
+#{$COMPOSE_PROJECT_NAME}.space:53 {
+#    file /conf/db.internal.space
+#    log
+#    errors
+#}
 
 external.space:53 {
     file /conf/db.external.space
-    log
-    errors
-}
-
-castle.space:53 {
-    file /conf/db.castle.space
     log
     errors
 }

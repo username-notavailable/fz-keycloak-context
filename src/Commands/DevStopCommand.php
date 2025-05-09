@@ -23,6 +23,7 @@ class DevStopCommand extends BaseConsoleCmd
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $yamlFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'compose.yaml');
+        $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (!is_file($yamlFilePath)) {
             if (!$input->getOption('quiet')) {
@@ -35,12 +36,14 @@ class DevStopCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Stop fzkc docker dev environment [$yamlFilePath] <<<");
+                $output->writeln(">>> Fzkc project [$projectName]");
+                $output->writeln(">>> Stop project dev environment [$yamlFilePath] <<<");
             }
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH));
+            putenv('COMPOSE_PROJECT_NAME=' . $projectName);
+            putenv('FZKC_PROJECT_NAME=' . $projectName);
 
             system('docker ' . $input->getOption('docker') . ' compose down ' . $input->getOption('down'), $returnCode);
 

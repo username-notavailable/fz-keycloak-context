@@ -24,8 +24,9 @@ class CastleDevStartCommand extends BaseConsoleCmd
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $castleName = $input->getArgument('dirname');
+        $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
-        $yamlFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'laravels',$castleName , '_docker', 'dev', 'compose.yaml');
+        $yamlFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName , '_docker', 'dev', 'compose.yaml');
 
         if (!is_file($yamlFilePath)) {
             if (!$input->getOption('quiet')) {
@@ -38,13 +39,18 @@ class CastleDevStartCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Fzkc castle \"$castleName\" docker dev environment [$yamlFilePath]...\n");
+                $output->writeln(">>> Fzkc project [$projectName]");
+                $output->writeln(">>> Fzkc castle [$castleName]");
+                $output->writeln(">>> Start castle dev environment [$yamlFilePath]...\n");
             }
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '-' . $input->getArgument('dirname') .'-dev');
-
+            putenv('COMPOSE_PROJECT_NAME=' . $projectName . '-' . $castleName);
+            putenv("FZKC_PROJECT_NAME=$projectName");
+            putenv("FZKC_CASTLE_NAME=$castleName");
+            // "FZKC_CASTLE_PORT" set by .env 
+            
             system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 
             return $returnCode === 0 ? Command::SUCCESS : Command::FAILURE;

@@ -3,15 +3,14 @@ services:
     build:
       context: ./../__dfiles/redis
       dockerfile: Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME}_redis_container
-    hostname: redis.docker.space
+    container_name: ${FZKC_PROJECT_NAME}-redis-container
+    hostname: redis.${FZKC_PROJECT_NAME}.space
     dns:
-      - 172.28.22.8
+      - ${FZKC_NETWORK_DNS_IP}
     restart: always
     ports:
-      - "6379:6379"
+      - "${FZKC_EXPOSED_PORT_REDIS}:6379"
     depends_on:
       - postgres
     networks:
-      fzkc-net01:
-        ipv4_address: 172.28.22.10
+      - fzkc-net01

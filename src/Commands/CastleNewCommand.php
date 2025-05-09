@@ -27,6 +27,7 @@ class CastleNewCommand extends BaseConsoleCmd
         $castleType = $input->getArgument('type');
         $castlePort = $input->getArgument('port');
         $castleDirectoryPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName);
+        $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (is_dir($castleDirectoryPath)) {
             if (!$input->getOption('quiet')) {
@@ -39,13 +40,16 @@ class CastleNewCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Fzkc install castle \"$castleName\" of type \"$castleType\"...\n");
+                $output->writeln(">>> Fzkc project [$projectName]");
+                $output->writeln(">>> NEW fzkc castle [$castleName]");
+                $output->writeln(">>> Fzkc install castle \"$castleName\" of type \"$castleType\"...\n");
             }
 
             chdir($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels'));
 
-            putenv("CASTLE_NAME=$castleName");
-            putenv("CASTLE_PORT=$castlePort");
+            putenv("FZKC_CASTLE_NAME=$castleName");
+            putenv("FZKC_CASTLE_PORT=$castlePort");
+            putenv("FZKC_PROJECT_NAME=$projectName");
 
             system('composer create-project "' . $castleType . '" "' . $castleName . '"', $returnCode);
 
@@ -53,7 +57,7 @@ class CastleNewCommand extends BaseConsoleCmd
         }
 
         if (!$input->getOption('quiet')) {
-            $output->writeln("\n>>> Fzkg castle directory \"$castleName\" installed <<<\n");
+            $output->writeln("\n>>> Fzkg castle [$castleName] installed <<<");
         }
 
         return Command::SUCCESS;

@@ -3,9 +3,9 @@ services:
     build:
       context: ./../__dfiles/keycloak
       dockerfile: Dockerfile
-    container_name: ${COMPOSE_PROJECT_NAME}_keycloak_container
+    container_name: ${FZKC_PROJECT_NAME}-keycloak-container
     environment:
-      KC_HOSTNAME: keycloak.docker.space
+      KC_HOSTNAME: keycloak.${FZKC_PROJECT_NAME}.space
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: "0.0.0.0"
       KC_HTTP_PORT: 8880
@@ -15,23 +15,22 @@ services:
       KC_DB_SCHEMA: public
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: keycloak
-      KC_DB_URL_HOST: postgres.docker.space
-      KC_DB_URL_PORT: 5432
+      KC_DB_URL_HOST: postgres.${FZKC_PROJECT_NAME}.space
+      KC_DB_URL_PORT: ${FZKC_EXPOSED_PORT_POSTGRES}
       KC_DB_URL_DATABASE: keycloak
-    hostname: keycloak.docker.space
+    hostname: keycloak.${FZKC_PROJECT_NAME}.space
     dns:
-      - 172.28.22.8
+      - ${FZKC_NETWORK_DNS_IP}
     restart: always
     volumes:
       - keycloak-conf:/opt/keycloak/conf
       - keycloak-providers:/opt/keycloak/providers
       - keycloak-providers:/opt/keycloak/themes
     ports:
-      - "8880:8880"
-      - "9000:9000"
+      - "${FZKC_EXPOSED_PORT_KEYCLOAK}:8880"
+      - "${FZKC_EXPOSED_PORT_KEYCLOAK_MANAGEMENT}:9000"
     depends_on:
       - postgres
     networks:
-      fzkc-net01:
-        ipv4_address: 172.28.22.12
+      - fzkc-net01
     command: ["start", "--optimized"]

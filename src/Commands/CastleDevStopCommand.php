@@ -18,12 +18,13 @@ class CastleDevStopCommand extends BaseConsoleCmd
             ->setHelp('Run "docker compose down" from the castle _docker dev directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose down" command.', '')
-            ->addOption('down', null, InputArgument::OPTIONAL, '"up" arguments and options in "docker compose down" command.', '');
+            ->addOption('down', null, InputArgument::OPTIONAL, '"down" arguments and options in "docker compose down" command.', '');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $castleName = $input->getArgument('dirname');
+        $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         $yamlFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'laravels',$castleName , '_docker', 'dev', 'compose.yaml');
 
@@ -38,12 +39,15 @@ class CastleDevStopCommand extends BaseConsoleCmd
             $returnCode = null;
 
             if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Fzkc castle \"$castleName\" docker dev environment [$yamlFilePath]...\n");
+                $output->writeln(">>> Fzkc project [$projectName]");
+                $output->writeln(">>> Fzkc castle [$castleName]");
+                $output->writeln(">>> Stop castle dev environment [$yamlFilePath] <<<");
             }
 
             chdir(dirname($yamlFilePath));
 
-            putenv('COMPOSE_PROJECT_NAME=' . basename(FZKC_CONSOLE_BASE_PATH) . '-' . $input->getArgument('dirname') .'-dev');
+            putenv('COMPOSE_PROJECT_NAME=' . $projectName . '-' . $castleName);
+            putenv('FZKC_PROJECT_NAME=' . $projectName);
 
             system('docker ' . $input->getOption('docker') . ' compose down ' . $input->getOption('down'), $returnCode);
 

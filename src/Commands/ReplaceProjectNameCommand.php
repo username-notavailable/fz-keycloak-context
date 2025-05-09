@@ -8,23 +8,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class ReplaceCastleHostPortCommand extends BaseConsoleCmd
+class ReplaceProjectNameCommand extends BaseConsoleCmd
 {
     protected function configure()
     {
         $this
-            ->setName('replace:castle:host:port')
-            ->setDescription('Replace castle host port number')
-            ->setHelp('Replace "{%% CASTLE_PORT %%}" with the castle name into a file')
+            ->setName('replace:project:name')
+            ->setDescription('Replace project name')
+            ->setHelp('Replace "{%% FZ_PROJECT_NAME %%}" with the project name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
-            ->addArgument('port', InputArgument::REQUIRED, 'Port number.')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $castleName = $input->getArgument('dirname');
-        $castlePort = $input->getArgument('port');
         $castleDirectoryPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName);
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
@@ -39,12 +37,12 @@ class ReplaceCastleHostPortCommand extends BaseConsoleCmd
             $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
 
             if (is_file($targetPath)) {
-                file_put_contents($targetPath, preg_replace('@{%% CASTLE_PORT %%}@', $castlePort, file_get_contents($targetPath)));
+                file_put_contents($targetPath, preg_replace('@{%% FZ_PROJECT_NAME %%}@', $castleName, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
                     $output->writeln(">>> Fzkc project [$projectName]");
                     $output->writeln(">>> Fzkc castle [$castleName]");
-                    $output->writeln(">>> \"{%% CASTLE_PORT %%}\" replaced with \"$castlePort\" into \"$targetPath\" <<<");
+                    $output->writeln(">>> \"{%% FZ_PROJECT_NAME %%}\" replaced with \"$castleName\" into \"$targetPath\" <<<");
                 }
         
                 return Command::SUCCESS;
