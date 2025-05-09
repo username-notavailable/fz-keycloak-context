@@ -15,7 +15,7 @@ class ReplaceCastleHostPortCommand extends BaseConsoleCmd
         $this
             ->setName('replace:castle:host:port')
             ->setDescription('Replace castle host port number')
-            ->setHelp('Replace "{%% CASTLE_PORT %%}" with the castle name into a file')
+            ->setHelp('Replace "{%% FZKC_CASTLE_PORT %%}" with the castle name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('port', InputArgument::REQUIRED, 'Port number.')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');
@@ -39,12 +39,12 @@ class ReplaceCastleHostPortCommand extends BaseConsoleCmd
             $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
 
             if (is_file($targetPath)) {
-                file_put_contents($targetPath, preg_replace('@{%% CASTLE_PORT %%}@', $castlePort, file_get_contents($targetPath)));
+                file_put_contents($targetPath, preg_replace('@{%% FZKC_CASTLE_PORT %%}@', $castlePort, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
                     $output->writeln(">>> Fzkc project [$projectName]");
                     $output->writeln(">>> Fzkc castle [$castleName]");
-                    $output->writeln(">>> \"{%% CASTLE_PORT %%}\" replaced with \"$castlePort\" into \"$targetPath\" <<<");
+                    $output->writeln(">>> \"{%% FZKC_CASTLE_PORT %%}\" replaced with \"$castlePort\" into \"$targetPath\" <<<");
                 }
         
                 return Command::SUCCESS;
