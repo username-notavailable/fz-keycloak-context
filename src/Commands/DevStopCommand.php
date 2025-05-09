@@ -37,7 +37,7 @@ class DevStopCommand extends BaseConsoleCmd
 
             if (!$input->getOption('quiet')) {
                 $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Stop project dev environment [$yamlFilePath] <<<");
+                $output->writeln(">>> Stop project dev environment [$yamlFilePath]...\n");
             }
 
             chdir(dirname($yamlFilePath));
