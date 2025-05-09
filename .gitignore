@@ -1,5 +1,9 @@
 vendor/
 composer.lock
 
+docker/dev/nginx/var/log/*
+!docker/dev/nginx/var/log/nginx/access.log
+!docker/dev/nginx/var/log/nginx/error.log
+
 docker/dev/postgres/var/lib/postgresql/data/*
 !docker/dev/postgres/var/lib/postgresql/data/.gitkeep
