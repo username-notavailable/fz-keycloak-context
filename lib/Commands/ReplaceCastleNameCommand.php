@@ -14,7 +14,7 @@ class ReplaceCastleNameCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('replace:castle:name')
-            ->setDescription('Replace castle name')
+            ->setDescription('Replace the castle name TAG into a file')
             ->setHelp('Replace "{%% FZKC_CASTLE_NAME %%}" with the castle name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');

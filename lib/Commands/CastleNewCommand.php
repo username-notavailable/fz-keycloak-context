@@ -15,7 +15,7 @@ class CastleNewCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('castle:new')
-            ->setDescription('Install new castle')
+            ->setDescription('Install a new castle')
             ->setHelp('Install a new castle into laravels directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('type', InputArgument::REQUIRED, 'Fzkc castle type (package name like "fzkc/laravelweb" or similar).')

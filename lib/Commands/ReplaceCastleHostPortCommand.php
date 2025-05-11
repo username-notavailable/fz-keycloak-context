@@ -14,7 +14,7 @@ class ReplaceCastleHostPortCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('replace:castle:host:port')
-            ->setDescription('Replace castle host port number')
+            ->setDescription('Replace the castle host port number TAG into a file')
             ->setHelp('Replace "{%% FZKC_CASTLE_PORT %%}" with the castle host port into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('port', InputArgument::REQUIRED, 'Port number.')

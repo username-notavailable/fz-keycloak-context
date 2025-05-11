@@ -9,14 +9,14 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class CastleNewLaravelWebCommand extends BaseCastleConsoleCmd
+class CastleNewLaravelApiCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
         $this
-            ->setName('castle:new:laravel:web')
-            ->setDescription('Install a new "fzkc/laravelweb" castle')
-            ->setHelp('Install a new castle of type "fzkc/laravelweb" into laravels directory')
+            ->setName('castle:new:laravel:api')
+            ->setDescription('Install a new "fzkc/laravelapi" castle')
+            ->setHelp('Install a new castle of type "fzkc/laravelapi" into laravels directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('port', InputArgument::REQUIRED, 'Fzkc castle port (docker exposed port).');
     }
@@ -26,7 +26,7 @@ class CastleNewLaravelWebCommand extends BaseCastleConsoleCmd
         $castleNewInput = new ArrayInput([
             'command' => 'castle:new',
             'dirname'    => $input->getArgument('dirname'),
-            'type'  => "fzkc/laravelweb",
+            'type'  => "fzkc/laravelapi",
             'port' => $input->getArgument('port')
         ]);
 

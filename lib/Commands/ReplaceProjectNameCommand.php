@@ -14,7 +14,7 @@ class ReplaceProjectNameCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('replace:project:name')
-            ->setDescription('Replace project name')
+            ->setDescription('Replace the project name TAG into a file')
             ->setHelp('Replace "{%% FZKC_PROJECT_NAME %%}" with the project name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');

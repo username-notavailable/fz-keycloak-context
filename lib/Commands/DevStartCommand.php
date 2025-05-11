@@ -14,7 +14,7 @@ class DevStartCommand extends BaseConsoleCmd
     {
         $this
             ->setName('dev:start')
-            ->setDescription('Start fzkc project dev environment')
+            ->setDescription('Start the fzkc project dev environment')
             ->setHelp("Run \"docker compose up\" from fzkc docker dev directory")
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose up" command.', '')
             ->addOption('up', null, InputArgument::OPTIONAL, '"up" arguments and options in "docker compose up" command.', '');

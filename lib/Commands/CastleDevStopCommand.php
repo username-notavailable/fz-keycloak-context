@@ -14,7 +14,7 @@ class CastleDevStopCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('castle:dev:stop')
-            ->setDescription('Stop a castle docker dev environment')
+            ->setDescription('Stop the castle dev environment')
             ->setHelp('Run "docker compose down" from the castle _docker dev directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose down" command.', '')

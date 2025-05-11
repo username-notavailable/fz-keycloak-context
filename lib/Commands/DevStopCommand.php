@@ -14,7 +14,7 @@ class DevStopCommand extends BaseConsoleCmd
     {
         $this
             ->setName('dev:stop')
-            ->setDescription('Stop fzkc project dev environment')
+            ->setDescription('Stop the fzkc project dev environment')
             ->setHelp("Run \"docker compose down\" from fzkc docker dev directory")
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose down" command.', '')
             ->addOption('down', null, InputArgument::OPTIONAL, '"down" arguments and options in "docker compose down" command.', '');

@@ -19,7 +19,7 @@ foreach ($vars as $key => $value) {
 }
 // ---
 
-$app = new Application('fuzzy cmd', '1.0.0');
+$app = new Application('[~]P fzkc console [~]P', '1.0.0');
 $app->setDefaultCommand('list');
 
 $commands = glob(__DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . '?*Command.php');

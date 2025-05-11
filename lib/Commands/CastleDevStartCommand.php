@@ -14,7 +14,7 @@ class CastleDevStartCommand extends BaseCastleConsoleCmd
     {
         $this
             ->setName('castle:dev:start')
-            ->setDescription('Start a castle docker dev environment')
+            ->setDescription('Start the castle dev environment')
             ->setHelp('Run "docker compose up" from the castle _docker dev directory')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose up" command.', '')
