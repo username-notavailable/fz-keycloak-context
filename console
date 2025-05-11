@@ -6,23 +6,37 @@ use Symfony\Component\Console\Application;
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Dotenv\Dotenv;
+
 define('FZKC_CONSOLE_BASE_PATH', __DIR__);
 
-/**
- * Start the console application.
- */
-$app = new Application('fzkc console', '1.0.0');
+// read .env file
+$dotenv = Dotenv::createImmutable(FZKC_CONSOLE_BASE_PATH);
+$vars = $dotenv->load();
+
+foreach ($vars as $key => $value) {
+    putenv($key . '=' . $value);
+}
+// ---
+
+$app = new Application('fuzzy cmd', '1.0.0');
 $app->setDefaultCommand('list');
 
-$commands = glob(__DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . '?*Command.php');
+$commands = glob(__DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'Commands' . DIRECTORY_SEPARATOR . '?*Command.php');
+
+$excludeCommands = [
+    //Fuzzy\Cmd\Commands\HelloCommand::class
+];
 
 if (count($commands) > 0) {
     foreach ($commands as $idx => $class) {
         $className = basename($class, '.php');
 
-        $commandNamespace = 'Fuzzy\\Fzkc\\Commands\\' . $className;
+        $command = 'Fuzzy\\Cmd\\Commands\\' . $className;
 
-        $app->add(new $commandNamespace);
+        if (!in_array($command, $excludeCommands)) {
+            $app->add(new $command);
+        }
     }
 }
 

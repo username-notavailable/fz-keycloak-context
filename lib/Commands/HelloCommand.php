@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuzzy\Fzkc\Commands;
+namespace Fuzzy\Cmd\Commands;
 
 // Importing the Command base class
 use Symfony\Component\Console\Command\Command;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class HelloCommand extends Command
+class HelloCommand extends BaseConsoleCmd
 {
     protected function configure()
     {

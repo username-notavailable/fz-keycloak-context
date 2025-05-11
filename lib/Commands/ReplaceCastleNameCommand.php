@@ -1,6 +1,6 @@
 <?php
 
-namespace Fuzzy\Fzkc\Commands;
+namespace Fuzzy\Cmd\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -8,14 +8,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 
-class ReplaceProjectNameCommand extends BaseCastleConsoleCmd
+class ReplaceCastleNameCommand extends BaseCastleConsoleCmd
 {
     protected function configure()
     {
         $this
-            ->setName('replace:project:name')
-            ->setDescription('Replace project name')
-            ->setHelp('Replace "{%% FZKC_PROJECT_NAME %%}" with the project name into a file')
+            ->setName('replace:castle:name')
+            ->setDescription('Replace castle name')
+            ->setHelp('Replace "{%% FZKC_CASTLE_NAME %%}" with the castle name into a file')
             ->addArgument('dirname', InputArgument::REQUIRED, 'Fzkc castle name (laravels subdirectory name).')
             ->addArgument('path', InputArgument::REQUIRED, 'Target file path relative to the castle directory.');
     }
@@ -37,10 +37,10 @@ class ReplaceProjectNameCommand extends BaseCastleConsoleCmd
             $targetPath = $this->makeFilePath(rtrim($castleDirectoryPath, '/'), $input->getArgument('path'));
 
             if (is_file($targetPath)) {
-                file_put_contents($targetPath, preg_replace('@{%% FZKC_PROJECT_NAME %%}@', $projectName, file_get_contents($targetPath)));
+                file_put_contents($targetPath, preg_replace('@{%% FZKC_CASTLE_NAME %%}@', $castleName, file_get_contents($targetPath)));
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln(">>> \"{%% FZKC_PROJECT_NAME %%}\" replaced with \"$projectName\" into \"$targetPath\" <<<");
+                    $output->writeln(">>> \"{%% FZKC_CASTLE_NAME %%}\" replaced with \"$castleName\" into \"$targetPath\" <<<");
                 }
         
                 return Command::SUCCESS;

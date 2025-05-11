@@ -1,5 +1,6 @@
 {
-    "name": "fuzzy/fzkc",
+    "name": "fuzzy/cmd",
+    "description": "Console basata su symfony/console",
     "type": "project",
     "require": {
         "php": "^8.2",
@@ -9,7 +10,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Fuzzy\\Fzkc\\": "src/"
+            "Fuzzy\\Cmd\\": "lib/"
         }
     },
     "authors": [
