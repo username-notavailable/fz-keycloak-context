@@ -14,8 +14,8 @@ class DevStopCommand extends BaseConsoleCmd
     {
         $this
             ->setName('dev:stop')
-            ->setDescription('Stop the fzkc project dev environment')
-            ->setHelp("Run \"docker compose down\" from fzkc docker dev directory")
+            ->setDescription('Stop the project context dev environment')
+            ->setHelp("Run \"docker compose down\" from project docker dev directory")
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose down" command.', '')
             ->addOption('down', null, InputArgument::OPTIONAL, '"down" arguments and options in "docker compose down" command.', '');
     }
@@ -37,7 +37,7 @@ class DevStopCommand extends BaseConsoleCmd
 
             if (!$input->getOption('quiet')) {
                 $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Stop project dev environment [$yamlFilePath]...\n");
+                $output->writeln(">>> Stop project context dev environment [$yamlFilePath]...\n");
             }
 
             chdir(dirname($yamlFilePath));

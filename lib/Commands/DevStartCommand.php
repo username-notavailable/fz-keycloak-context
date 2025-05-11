@@ -14,8 +14,8 @@ class DevStartCommand extends BaseConsoleCmd
     {
         $this
             ->setName('dev:start')
-            ->setDescription('Start the fzkc project dev environment')
-            ->setHelp("Run \"docker compose up\" from fzkc docker dev directory")
+            ->setDescription('Start the project context dev environment')
+            ->setHelp("Run \"docker compose up\" from project docker dev directory")
             ->addOption('docker', null, InputArgument::OPTIONAL, '"docker" arguments and options in "docker compose up" command.', '')
             ->addOption('up', null, InputArgument::OPTIONAL, '"up" arguments and options in "docker compose up" command.', '');
     }
@@ -37,7 +37,7 @@ class DevStartCommand extends BaseConsoleCmd
 
             if (!$input->getOption('quiet')) {
                 $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Start project dev environment [$yamlFilePath]...\n");
+                $output->writeln(">>> Start project context dev environment [$yamlFilePath]...\n");
             }
 
             chdir(dirname($yamlFilePath));
