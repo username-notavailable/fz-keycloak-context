@@ -1,6 +1,6 @@
 {
-    "name": "fuzzy/cmd",
-    "description": "Console basata su symfony/console",
+    "name": "fuzzy/fzkc",
+    "description": "A docker compose development context keycloak based",
     "type": "project",
     "require": {
         "php": "^8.2",
