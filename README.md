@@ -35,8 +35,8 @@ php console list
 <br />
 
 - Castle is a docker image then it's language agnostic
-- Castle created docker image's name will be <project_name>-castle (by default)
-- Castle created docker container's name will be <project_name>-<castle_name>-castle-container (by default)
+- Castle created docker image's name will be <project_name>-<castle_name>-castle
+- Castle created docker container's name will be <project_name>-<castle_name>-castle-container
 
 <br />
 
