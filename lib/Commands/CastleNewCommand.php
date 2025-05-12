@@ -62,6 +62,17 @@ class CastleNewCommand extends BaseCastleConsoleCmd
                 $commandInput = new ArrayInput([
                     'command' => 'replace:castle:name',
                     'dirname'    => $input->getArgument('dirname'),
+                    'path'  => "_docker/dev/compose.yaml",
+                    '-q' => true
+                ]);
+        
+                $commandInput->setInteractive(false);
+        
+                $this->getApplication()->doRun($commandInput, $output);
+
+                $commandInput = new ArrayInput([
+                    'command' => 'replace:castle:name',
+                    'dirname'    => $input->getArgument('dirname'),
                     'path'  => "_docker/dev/.env",
                     '-q' => true
                 ]);
@@ -94,7 +105,7 @@ class CastleNewCommand extends BaseCastleConsoleCmd
                 $this->getApplication()->doRun($commandInput, $output);
 
                 if (!$input->getOption('quiet')) {
-                    $output->writeln("\n>>> Castle [$castleName] of type [$castleType] installed <<<\n");
+                    $output->writeln("\n>>> Castle [$castleName] of type [$castleType] installed ($projectName.$castleName.space:$castlePort) <<<\n");
                 }
 
                 return Command::SUCCESS;
