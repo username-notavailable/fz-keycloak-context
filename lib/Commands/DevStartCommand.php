@@ -40,6 +40,16 @@ class DevStartCommand extends BaseConsoleCmd
                 $output->writeln(">>> Start project context dev environment [$yamlFilePath]...\n");
             }
 
+            $laravelsPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels');
+
+            foreach (glob($laravelsPath . '*', GLOB_ONLYDIR) as $castle) {
+                $externalFilePath = $this->makeFilePath($castle, '_docker', 'dev', 'data', 'external.conf.template');
+
+                if (file_exists($externalFilePath)) {
+                    copy($externalFilePath, $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'nginx', 'etc', 'nginx', 'templates', basename($castle) . '.' . $projectName . '.external.space.conf.template'));
+                }
+            }
+
             chdir(dirname($yamlFilePath));
 
             putenv('COMPOSE_PROJECT_NAME=' . $projectName);
