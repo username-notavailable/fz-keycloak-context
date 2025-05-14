@@ -4,6 +4,9 @@ composer.lock
 docker/dev/nginx/etc/nginx/conf.d/*
 !docker/dev/nginx/etc/nginx/conf.d/.gitkeep
 
+docker/dev/nginx/etc/nginx/templates/*
+!docker/dev/nginx/etc/nginx/templates/.gitkeep
+
 docker/dev/nginx/var/log/*
 !docker/dev/nginx/var/log/nginx/access.log
 !docker/dev/nginx/var/log/nginx/error.log
