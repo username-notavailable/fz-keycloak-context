@@ -1,5 +1,7 @@
 services:
   redis:
+    cap_add:
+      - NET_ADMIN
     build:
       context: ./../__dfiles/redis
       dockerfile: Dockerfile

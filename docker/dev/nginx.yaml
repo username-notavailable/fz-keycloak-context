@@ -1,5 +1,7 @@
 services:
   nginx:
+    cap_add:
+      - NET_ADMIN
     build:
       context: ./../__dfiles/nginx/
       dockerfile: Dockerfile
@@ -9,6 +11,8 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      FZKC_EXPOSED_PORT_NGINX_HTTP: ${FZKC_EXPOSED_PORT_NGINX_HTTP}
+      FZKC_EXPOSED_PORT_NGINX_HTTPS: ${FZKC_EXPOSED_PORT_NGINX_HTTPS}
       #NGINX_ENTRYPOINT_QUIET_LOGS: 1
       #DNS_RECORD: "969b086a94ec02debe10ae16232f2ded"
       #DNS_RECORD_NAME: "test.fuzzy-net.it"
@@ -17,14 +21,12 @@ services:
       - ${FZKC_NETWORK_DNS_IP}
     restart: always
     volumes:
-      - ./nginx/docker-entrypoint.d:/docker-entrypoint.d
       - nginx-etc:/etc/nginx
       - nginx-var-log:/var/log
       - nginx-var-www:/var/www
-      #- ./../../laravels/backend/public:/backend
     ports:
-      - "${FZKC_EXPOSED_PORT_NGINX_HTTP}:80"
-      - "${FZKC_EXPOSED_PORT_NGINX_HTTPS}:443"
+      - "${FZKC_EXPOSED_PORT_NGINX_HTTP}:${FZKC_EXPOSED_PORT_NGINX_HTTP}"
+      - "${FZKC_EXPOSED_PORT_NGINX_HTTPS}:${FZKC_EXPOSED_PORT_NGINX_HTTPS}"
     depends_on:
       - postgres
     networks:

@@ -1,5 +1,7 @@
 services:
   keycloak:
+    cap_add:
+      - NET_ADMIN
     build:
       context: ./../__dfiles/keycloak
       dockerfile: Dockerfile
@@ -12,7 +14,8 @@ services:
       KC_HOSTNAME: keycloak.${FZKC_PROJECT_NAME}.space
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: "0.0.0.0"
-      KC_HTTP_PORT: 8880
+      KC_HTTP_PORT: ${FZKC_EXPOSED_PORT_KEYCLOAK}
+      KC_HTTP_MANAGEMENT_PORT: ${FZKC_EXPOSED_PORT_KEYCLOAK_MANAGEMENT}
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_DB: postgres
@@ -31,10 +34,9 @@ services:
       - keycloak-providers:/opt/keycloak/providers
       - keycloak-providers:/opt/keycloak/themes
     ports:
-      - "${FZKC_EXPOSED_PORT_KEYCLOAK}:8880"
-      - "${FZKC_EXPOSED_PORT_KEYCLOAK_MANAGEMENT}:9000"
+      - "${FZKC_EXPOSED_PORT_KEYCLOAK}:${FZKC_EXPOSED_PORT_KEYCLOAK}"
+      - "${FZKC_EXPOSED_PORT_KEYCLOAK_MANAGEMENT}:${FZKC_EXPOSED_PORT_KEYCLOAK_MANAGEMENT}"
     depends_on:
       - postgres
     networks:
       - fzkc-net01
-    command: ["start", "--optimized"]

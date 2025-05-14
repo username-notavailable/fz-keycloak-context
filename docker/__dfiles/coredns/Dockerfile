@@ -1,4 +1,6 @@
-FROM redis
+FROM debian:stable
+
+COPY --from=coredns/coredns:latest /coredns /coredns
 
 RUN set -eux; \
 apt-get update; \
@@ -15,7 +17,7 @@ apt-get install -y jq;
 
 COPY start.sh /start.sh
 COPY init_dns.sh /init_dns.sh
-COPY redis.conf /usr/local/etc/redis/redis.conf
-#COPY sysctl.conf /etc/sysctl.conf
+
+ENTRYPOINT []
 
 CMD ["/start.sh"]
