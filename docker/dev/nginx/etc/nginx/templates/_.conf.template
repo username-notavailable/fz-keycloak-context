@@ -1,0 +1,10 @@
+# Default server for clients who do not send correct Host header.
+# The underline in the file name makes sure that this file comes first in the dir.
+server {
+  server_name _;
+  listen *:$FZKC_EXPOSED_PORT_NGINX_HTTP default_server deferred;
+  listen [::]:$FZKC_EXPOSED_PORT_NGINX_HTTP default_server deferred;
+  #listen *:$FZKC_EXPOSED_PORT_NGINX_HTTPS ssl;
+  #listen [::]:$FZKC_EXPOSED_PORT_NGINX_HTTPS ssl;
+  return 444;
+}
