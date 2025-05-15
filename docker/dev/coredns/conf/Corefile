@@ -1,16 +1,16 @@
-.:{$FZKC_EXPOSED_PORT_DNS} {
-    forward . 8.8.8.8 8.8.4.4
+.:$FZKC_EXPOSED_PORT_DNS {
+    forward $FZKC_NETWORK_DNS_FORWARD
     log
     errors
 }
 
-#{$COMPOSE_PROJECT_NAME}.space:{$FZKC_EXPOSED_PORT_DNS} {
+#$COMPOSE_PROJECT_NAME.space:$FZKC_EXPOSED_PORT_DNS {
 #    file /conf/db.internal.space
 #    log
 #    errors
 #}
 
-external.space:{$FZKC_EXPOSED_PORT_DNS} {
+external.space:$FZKC_EXPOSED_PORT_DNS {
     file /conf/db.external.space
     log
     errors

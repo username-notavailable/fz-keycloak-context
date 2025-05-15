@@ -16,7 +16,7 @@ services:
       - ${FZKC_NETWORK_DNS_IP}
     restart: always
     ports:
-      - "${FZKC_EXPOSED_PORT_REDIS}:6379"
+      - "${FZKC_EXPOSED_PORT_REDIS}:${FZKC_EXPOSED_PORT_REDIS}"
     depends_on:
       - postgres
     networks:

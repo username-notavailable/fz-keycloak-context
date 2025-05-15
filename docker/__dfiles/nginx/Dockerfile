@@ -3,6 +3,7 @@ FROM nginx:stable
 RUN set -eux; \
 apt-get update; \
 apt-get install -y apt-utils; \
+apt-get install -y gettext-base; \
 apt-get install -y nano; \
 apt-get install -y net-tools; \
 apt-get install -y iputils-ping; \

@@ -2,4 +2,6 @@
 
 /init_dns.sh
 
-/coredns -dns.port $FZKC_EXPOSED_PORT_DNS -conf /conf/Corefile
+/bin/envsubst < /conf/Corefile > /conf/Corefile.running
+
+/coredns -dns.port $FZKC_EXPOSED_PORT_DNS -conf /conf/Corefile.running
