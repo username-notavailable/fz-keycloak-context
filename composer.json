@@ -6,7 +6,8 @@
         "php": "^8.2",
         "symfony/console": "^7.2",
         "vlucas/phpdotenv": "^5.6",
-        "badcow/dns": "^4.3.0"
+        "badcow/dns": "^4.3.0",
+        "dallgoot/yaml": "^1.0"
     },
     "license": "MIT",
     "autoload": {
