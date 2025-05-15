@@ -22,7 +22,6 @@ class DevtHostsCommand extends BaseConsoleCmd
     {
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
         $contextEnvVars = $this->getContextEnvVars();
-        $contextEnvVars['FZKC_PROJECT_NAME'] = $projectName;
         
         if (!$input->getOption('quiet')) {
             $output->writeln(">>> Fzkc project [$projectName]");
@@ -63,7 +62,6 @@ class DevtHostsCommand extends BaseConsoleCmd
             $ports = [];
 
             $castleEnvVars = $this->getCastleEnvVars($castleName);
-            $castleEnvVars['FZKC_CASTLE_NAME'] = $castleName;
 
             foreach ($sYaml->services->{$serviceName}->ports as $port) {
                 $ports[] = $port;

@@ -35,12 +35,20 @@ class BaseConsoleCmd extends Command
     public function getContextEnvVars() : array
     {
         $dotenv = Dotenv::createImmutable($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev'));
-        return $dotenv->load();
+        $vars = $dotenv->load();
+
+        $vars['FZKC_PROJECT_NAME'] = basename(FZKC_CONSOLE_BASE_PATH);
+
+        return $vars;
     }
 
     public function getCastleEnvVars(string $castleName) : array
     {
         $dotenv = Dotenv::createImmutable($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName, '_docker', 'dev'));
-        return $dotenv->load();
+        $vars = $dotenv->load();
+
+        $vars['FZKC_CASTLE_NAME'] = $castleName;
+
+        return $vars;
     }
 }
