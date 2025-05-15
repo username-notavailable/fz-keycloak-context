@@ -31,9 +31,7 @@ class CastleNewCommand extends BaseCastleConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (is_dir($castleDirectoryPath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc castle directory "' . $castleName . '" already exists !!!');
-            }
+            $output->writeln('!!! Fzkc castle directory "' . $castleName . '" already exists !!!');
 
             return Command::FAILURE;
         }
@@ -59,50 +57,41 @@ class CastleNewCommand extends BaseCastleConsoleCmd
                     $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
                 }
 
-                $commandInput = new ArrayInput([
+                $commandsInputs = [];
+
+                $commandsInputs[] = new ArrayInput([
                     'command' => 'replace:castle:name',
                     'dirname'    => $input->getArgument('dirname'),
                     'path'  => "_docker/dev/compose.yaml",
                     '-q' => true
                 ]);
-        
-                $commandInput->setInteractive(false);
-        
-                $this->getApplication()->doRun($commandInput, $output);
 
-                $commandInput = new ArrayInput([
+                $commandsInputs[] = new ArrayInput([
                     'command' => 'replace:castle:name',
                     'dirname'    => $input->getArgument('dirname'),
                     'path'  => "_docker/dev/.env",
                     '-q' => true
                 ]);
-        
-                $commandInput->setInteractive(false);
-        
-                $this->getApplication()->doRun($commandInput, $output);
 
-                $commandInput = new ArrayInput([
+                $commandsInputs[] = new ArrayInput([
                     'command' => 'replace:castle:host:port',
                     'dirname'    => $input->getArgument('dirname'),
                     'port' => $castlePort,
                     'path'  => "_docker/dev/.env",
                     '-q' => true
                 ]);
-        
-                $commandInput->setInteractive(false);
-        
-                $this->getApplication()->doRun($commandInput, $output);
 
-                $commandInput = new ArrayInput([
+                $commandsInputs[] = new ArrayInput([
                     'command' => 'replace:project:name',
                     'dirname'    => $input->getArgument('dirname'),
                     'path'  => "_docker/dev/.env",
                     '-q' => true
                 ]);
-        
-                $commandInput->setInteractive(false);
-        
-                $this->getApplication()->doRun($commandInput, $output);
+
+                foreach ($commandsInputs as $commandInput) {
+                    $commandInput->setInteractive(false);
+                    $this->getApplication()->doRun($commandInput, $output);
+                }
 
                 if (!$input->getOption('quiet')) {
                     $output->writeln("\n>>> Castle [$castleName] of type [$castleType] installed ($projectName.$castleName.space:$castlePort) <<<\n");

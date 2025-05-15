@@ -26,9 +26,7 @@ class DevStopCommand extends BaseConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (!is_file($yamlFilePath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc dev compose file "' . $yamlFilePath . '" not exists !!!');
-            }
+            $output->writeln('!!! Fzkc dev compose file "' . $yamlFilePath . '" not exists !!!');
 
             return Command::FAILURE;
         }

@@ -27,9 +27,7 @@ class ReplaceCastleNameCommand extends BaseCastleConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (!is_dir($castleDirectoryPath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc castle directory "' . $castleName . '" not exists !!!');
-            }
+            $output->writeln('!!! Fzkc castle directory "' . $castleName . '" not exists !!!');
 
             return Command::FAILURE;
         }
@@ -46,9 +44,7 @@ class ReplaceCastleNameCommand extends BaseCastleConsoleCmd
                 return Command::SUCCESS;
             }
             else {
-                if (!$input->getOption('quiet')) {
-                    $output->writeln('!!! File "' . $targetPath . '" not exists !!!');
-                }
+                $output->writeln('!!! File "' . $targetPath . '" not exists !!!');
 
                 return Command::FAILURE;
             }

@@ -2,9 +2,6 @@
 
 namespace Fuzzy\Cmd\Commands;
 
-use Dotenv\Dotenv;
-
-
 class BaseCastleConsoleCmd extends BaseConsoleCmd
 {
     public function setCastleEnvVars(string $projectName, string $castleName, ?int $castlePort)
@@ -15,14 +12,10 @@ class BaseCastleConsoleCmd extends BaseConsoleCmd
         if (!is_null($castlePort)) {
             putenv("FZKC_CASTLE_PORT=$castlePort");
         }
+        //else 
+        // "FZKC_CASTLE_PORT" set by docker from castle dev .env 
+        //
 
-        // "FZKC_CASTLE_PORT" set by .env 
-
-        $dotenv = Dotenv::createImmutable($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev'));
-        $vars = $dotenv->load();
-
-        foreach ($vars as $key => $value) {
-            putenv($key . '=' . $value);
-        }
+        $this->setContextEnvVars();
     }
 }

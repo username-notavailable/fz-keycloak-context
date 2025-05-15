@@ -29,9 +29,7 @@ class CastleDevStartCommand extends BaseCastleConsoleCmd
         $yamlFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'laravels', $castleName , '_docker', 'dev', 'compose.yaml');
 
         if (!is_file($yamlFilePath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc castle dev compose file "' . $yamlFilePath . '" not exists !!!');
-            }
+            $output->writeln('!!! Fzkc castle dev compose file "' . $yamlFilePath . '" not exists !!!');
 
             return Command::FAILURE;
         }

@@ -11,7 +11,7 @@ networks:
       driver: default
       config:
         - subnet: ${FZKC_NETWORK}
-          gateway: ${FZKC_NETWORK_GATEWAY}
+          gateway: ${FZKC_NETWORK_GATEWAY_IP}
 
 volumes:
   pgdata:

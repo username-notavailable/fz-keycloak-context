@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-
 class DevStartCommand extends BaseConsoleCmd
 {
     protected function configure()
@@ -26,9 +25,7 @@ class DevStartCommand extends BaseConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
 
         if (!is_file($yamlFilePath)) {
-            if (!$input->getOption('quiet')) {
-                $output->writeln('!!! Fzkc dev compose file "' . $yamlFilePath . '" not exists !!!');
-            }
+            $output->writeln('!!! Fzkc dev compose file "' . $yamlFilePath . '" not exists !!!');
 
             return Command::FAILURE;
         }
@@ -38,16 +35,6 @@ class DevStartCommand extends BaseConsoleCmd
             if (!$input->getOption('quiet')) {
                 $output->writeln(">>> Fzkc project [$projectName]");
                 $output->writeln(">>> Start project context dev environment [$yamlFilePath]...\n");
-            }
-
-            $laravelsPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels');
-
-            foreach (glob($laravelsPath . '*', GLOB_ONLYDIR) as $castle) {
-                $externalFilePath = $this->makeFilePath($castle, '_docker', 'dev', 'data', 'external.conf.template');
-
-                if (file_exists($externalFilePath)) {
-                    copy($externalFilePath, $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'nginx', 'etc', 'nginx', 'templates', basename($castle) . '.' . $projectName . '.external.space.conf.template'));
-                }
             }
 
             chdir(dirname($yamlFilePath));
