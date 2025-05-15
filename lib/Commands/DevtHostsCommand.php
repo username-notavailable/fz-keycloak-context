@@ -14,8 +14,8 @@ class DevtHostsCommand extends BaseConsoleCmd
     {
         $this
             ->setName('dev:hosts')
-            ->setDescription('Start the project context dev environment')
-            ->setHelp("Run \"docker compose up\" from project docker dev directory");
+            ->setDescription('Print dev hosts')
+            ->setHelp("Print a suggested hosts file");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -23,7 +23,6 @@ class DevtHostsCommand extends BaseConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
         $contextEnvVars = $this->getContextEnvVars();
         $contextEnvVars['FZKC_PROJECT_NAME'] = $projectName;
-        $externalNginxPorts = [];
         
         if (!$input->getOption('quiet')) {
             $output->writeln(">>> Fzkc project [$projectName]");
@@ -42,10 +41,6 @@ class DevtHostsCommand extends BaseConsoleCmd
 
             foreach ($sYaml->services->{$serviceName}->ports as $port) {
                 $ports[] = $port;
-            }
-
-            if ($serviceName === 'nginx') {
-                $externalNginxPorts = $ports;
             }
 
             $ports = implode(' ', $ports);
@@ -94,8 +89,7 @@ class DevtHostsCommand extends BaseConsoleCmd
         if (file_exists($coreDnsZoneFilePath)) {
             $file = file_get_contents($coreDnsZoneFilePath);
             $zone = Parser::parse('external.space.', $file);
-            $ports = implode(' ', $externalNginxPorts);
-
+            
             foreach ($contextEnvVars as $envVarName => $envVarValue) {
                 $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
             }
@@ -107,7 +101,7 @@ class DevtHostsCommand extends BaseConsoleCmd
                     $hostname = trim($record->getName(), '.');
 
                     if (!in_array($hostname, ['a.external.space', 'b.external.space'])) {
-                        $output->writeln("$contextEnvVars[FZKC_NETWORK_GATEWAY_IP]\t$hostname\t# ports $ports"); 
+                        $output->writeln("$contextEnvVars[FZKC_NETWORK_GATEWAY_IP]\t$hostname\t# nginx proxy_pass"); 
                     }                   
                 }
             }
