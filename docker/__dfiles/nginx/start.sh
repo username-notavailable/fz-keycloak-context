@@ -2,9 +2,11 @@
 
 /init_dns.sh
 
-rm /etc/nginx/conf.d/*.conf
+if [[ "$(ls -1 /etc/nginx/conf.d)" != "" ]]
+then
+    rm /etc/nginx/conf.d/*.conf
+fi
 
-/docker-entrypoint.sh nginx
+/check_conf.sh &
 
-/sbin/nginx -s quit
-/sbin/nginx -g 'daemon off;'
+/docker-entrypoint.sh nginx -g 'daemon off;'
