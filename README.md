@@ -58,5 +58,5 @@ php console list
 
 <br />
 
-for issues:<br />
+for issues/update/upgrade:<br />
 d.viviani@fuzzy-net.it

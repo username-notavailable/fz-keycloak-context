@@ -1,23 +1,23 @@
 services:
-  redis:
+  memcached:
     cap_add:
       - NET_ADMIN
     build:
-      context: ./../__dfiles/redis
+      context: ./../__dfiles/memcached
       dockerfile: Dockerfile
-    container_name: ${FZKC_PROJECT_NAME}-redis-container
+    container_name: ${FZKC_PROJECT_NAME}-memcached-container
     env_file:
       - ./.env
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
-    hostname: redis.${FZKC_PROJECT_NAME}.space
+    hostname: memcached.${FZKC_PROJECT_NAME}.space
     dns:
       - ${FZKC_NETWORK_DNS_IP}
     restart: always
     volumes:
-      - redis-conf:/mnt
+      - memcached-conf:/mnt
     ports:
-      - "${FZKC_EXPOSED_PORT_REDIS}:${FZKC_EXPOSED_PORT_REDIS}"
+      - "${FZKC_EXPOSED_PORT_MEMCACHED}:${FZKC_EXPOSED_PORT_MEMCACHED}"
     networks:
       - fzkc-net01

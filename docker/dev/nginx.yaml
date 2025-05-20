@@ -27,8 +27,6 @@ services:
     ports:
       - "${FZKC_EXPOSED_PORT_NGINX_HTTP}:${FZKC_EXPOSED_PORT_NGINX_HTTP}"
       - "${FZKC_EXPOSED_PORT_NGINX_HTTPS}:${FZKC_EXPOSED_PORT_NGINX_HTTPS}"
-    depends_on:
-      - postgres
     networks:
       - fzkc-net01
 

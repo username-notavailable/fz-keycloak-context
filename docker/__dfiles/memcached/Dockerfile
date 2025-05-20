@@ -1,4 +1,6 @@
-FROM nginx:stable
+FROM memcached
+
+USER root
 
 RUN set -eux; \
 apt-get update; \
@@ -17,8 +19,6 @@ apt-get install -y jq;
 
 COPY start.sh /start.sh
 COPY init_dns.sh /init_dns.sh
-COPY update_cloudflare_dns.sh /update_cloudflare_dns.sh
-COPY certbot_renew.sh /certbot_renew.sh
-COPY crontab /etc/crontab
+COPY memcached.conf /memcached.conf
 
 CMD ["/start.sh"]

@@ -1,6 +1,14 @@
+# https://stackoverflow.com/questions/36035595/communicating-between-docker-containers-in-different-networks-on-the-same-host
+
+#
+# iptables -I DOCKER-USER -i <vnic1> -o <vnic2> -j ACCEPT
+# iptables -I DOCKER-USER -i <vnic2> -o <vnic1> -j ACCEPT
+#
+
 include:
   - postgres.yaml
   - redis.yaml
+  - memcached.yaml
   - nginx.yaml
   - keycloak.yaml
   - coredns.yaml
@@ -61,5 +69,19 @@ volumes:
     driver_opts:
       type: none
       device: ./nginx/var/www
+      o: bind
+
+  redis-conf:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./redis/conf
+      o: bind
+  
+  memcached-conf:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./memcached/conf
       o: bind
   

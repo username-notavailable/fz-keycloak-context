@@ -2,5 +2,11 @@
 
 /init_dns.sh
 
-/bin/envsubst < /usr/local/etc/redis/redis.conf > /usr/local/etc/redis/running.conf
-/usr/local/bin/redis-server /usr/local/etc/redis/running.conf
+if [[ ! -f "/mnt/redis.conf" ]]
+then
+    cp /redis.conf /mnt/redis.conf
+    chmod 666 /mnt/redis.conf
+fi
+
+/bin/envsubst < /mnt/redis.conf > /mnt/running.conf
+/usr/local/bin/redis-server /mnt/running.conf
