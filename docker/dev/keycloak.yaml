@@ -11,6 +11,9 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
       KC_HOSTNAME: keycloak.${FZKC_PROJECT_NAME}.space
       KC_HTTP_ENABLED: "true"
       KC_HTTP_HOST: "0.0.0.0"

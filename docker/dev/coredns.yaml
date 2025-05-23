@@ -11,6 +11,9 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
     hostname: coredns.${FZKC_PROJECT_NAME}.space
     dns:
       - 127.0.0.1

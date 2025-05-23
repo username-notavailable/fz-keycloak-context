@@ -11,6 +11,9 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
       FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
     hostname: memcached.${FZKC_PROJECT_NAME}.space
     dns:
       - ${FZKC_NETWORK_DNS_IP}

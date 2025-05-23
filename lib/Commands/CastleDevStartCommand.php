@@ -47,6 +47,16 @@ class CastleDevStartCommand extends BaseCastleConsoleCmd
             putenv('COMPOSE_PROJECT_NAME=' . $projectName);
 
             $this->setCastleEnvVars($projectName, $castleName, null);
+
+            $label_l = strlen("$projectName-$castleName-castle-container");
+
+            if ($label_l < 32) {
+                $label_l = 32;
+            }
+
+            putenv('COLUMNS=' . (intval(getenv('COLUMNS') ?: 80) - ($label_l + 3)));
+            putenv('LINES=' . intval(getenv('LINES') ?: 24));
+            putenv('TERM=' . getenv('TERM') ?: '');
             
             system('docker ' . $input->getOption('docker') . ' compose up ' . $input->getOption('up'), $returnCode);
 
