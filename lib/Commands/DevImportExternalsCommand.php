@@ -51,8 +51,8 @@ class DevImportExternalsCommand extends BaseConsoleCmd
             $externalFilePath = $this->makeFilePath($castle, '_docker', 'dev', 'data', 'external.conf.template');
 
             if (file_exists($externalFilePath)) {
-                $castleEnvVrs = $this->getCastleEnvVars($castleName);
-                $castlePort = $castleEnvVrs['FZKC_CASTLE_PORT'];
+                $castleEnvVars = $this->getCastleEnvVars($castleName);
+                $castlePort = $castleEnvVars['FZKC_CASTLE_PORT'];
                 $castlesHostnames[] = $castleName . '-' . $projectName . '.external.space';
                 $outputTemplatePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'nginx', 'etc', 'nginx', 'templates', $castleName . '-' . $projectName . '.external.space.conf.template');
                 copy($externalFilePath, $outputTemplatePath);
