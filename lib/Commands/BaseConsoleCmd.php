@@ -22,7 +22,7 @@ class BaseConsoleCmd extends Command
         return implode('\\', array_filter(array_filter((array)$pathParts), function($value) { return !empty($value) && is_string($value); }));
     }
 
-    /*public function setContextEnvVars() : void
+    public function setContextEnvVars() : void
     {
         $dotenv = Dotenv::createImmutable($this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev'));
         $vars = $dotenv->load();
@@ -30,7 +30,7 @@ class BaseConsoleCmd extends Command
         foreach ($vars as $key => $value) {
             putenv($key . '=' . $value);
         }
-    }*/
+    }
 
     public function envSubst(string $string, array $contextEnvVars = [], array $castleEnvVars = []) : string
     {
