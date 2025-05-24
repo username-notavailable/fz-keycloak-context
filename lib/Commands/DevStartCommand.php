@@ -34,9 +34,7 @@ class DevStartCommand extends BaseConsoleCmd
         else {
             $returnCode = null;
 
-            if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Fzkc project [$projectName]\n");
-            }
+            $output->writeln(">>> Fzkc project [$projectName]\n");
 
             $yaml = Yaml::parseFile($yamlFilePath, 0, 0);
             $label_l = 32;
@@ -54,21 +52,13 @@ class DevStartCommand extends BaseConsoleCmd
                         $ports[] = $port;
                     }
 
-                    $ports = implode(' ', $ports);
-
-                    foreach ($contextEnvVars as $envVarName => $envVarValue) {
-                        $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
-                        $hostname = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $hostname);
-                    }
+                    $ports = $this->envSubst(implode(' ', $ports), $contextEnvVars);
+                    $hostname = $this->envSubst($hostname, $contextEnvVars);
 
                     $output->writeln(sprintf(">>> %'.-40s %-s", $hostname, $ports));
                 }
 
-                $containerName = $sYaml->services->{$serviceName}->container_name;
-
-                foreach ($contextEnvVars as $envVarName => $envVarValue) {
-                    $containerName = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $containerName);
-                }
+                $containerName = $this->envSubst($sYaml->services->{$serviceName}->container_name, $contextEnvVars);
 
                 $t_label_l = strlen($containerName);
                 
@@ -77,9 +67,7 @@ class DevStartCommand extends BaseConsoleCmd
                 }
             }
 
-            if (!$input->getOption('quiet')) {
-                $output->writeln("\n>>> Start project context dev environment [$yamlFilePath]...\n");
-            }
+            $output->writeln("\n>>> Start project context dev environment [$yamlFilePath]...\n");
 
             chdir(dirname($yamlFilePath));
 

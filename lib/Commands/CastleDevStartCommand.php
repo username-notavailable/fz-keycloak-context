@@ -36,11 +36,9 @@ class CastleDevStartCommand extends BaseCastleConsoleCmd
         else {
             $returnCode = null;
 
-            if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Fzkc castle [$castleName]");
-                $output->writeln(">>> Start castle dev environment [$yamlFilePath]...\n");
-            }
+            $output->writeln(">>> Fzkc project [$projectName]");
+            $output->writeln(">>> Fzkc castle [$castleName]");
+            $output->writeln(">>> Start castle dev environment [$yamlFilePath]...\n");
 
             chdir(dirname($yamlFilePath));
 

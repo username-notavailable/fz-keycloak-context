@@ -36,11 +36,9 @@ class CastleDevStopCommand extends BaseCastleConsoleCmd
         else {
             $returnCode = null;
 
-            if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Fzkc castle [$castleName]");
-                $output->writeln(">>> Stop castle dev environment [$yamlFilePath]...\n");
-            }
+            $output->writeln(">>> Fzkc project [$projectName]");
+            $output->writeln(">>> Fzkc castle [$castleName]");
+            $output->writeln(">>> Stop castle dev environment [$yamlFilePath]...\n");
 
             chdir(dirname($yamlFilePath));
 

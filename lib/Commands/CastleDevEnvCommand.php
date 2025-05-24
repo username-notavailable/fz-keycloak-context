@@ -31,11 +31,9 @@ class CastleDevEnvCommand extends BaseConsoleCmd
             return Command::FAILURE;
         }
         else {
-            if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Fzkc project [$projectName]");
-                $output->writeln(">>> Fzkc castle [$castleName]");
-                $output->writeln(">>> dev environment <<<");
-            }
+            $output->writeln(">>> Fzkc project [$projectName]");
+            $output->writeln(">>> Fzkc castle [$castleName]");
+            $output->writeln(">>> dev environment <<<");
     
             foreach ($this->getContextEnvVars() as $envVarName => $envVarValue) {
                 $output->writeln($envVarName . '=' . $envVarValue);

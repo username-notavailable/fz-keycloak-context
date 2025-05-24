@@ -38,9 +38,7 @@ class DevImportExternalsCommand extends BaseConsoleCmd
         else {
         }*/
 
-        if (!$input->getOption('quiet')) {
-            $output->writeln(">>> Fzkc project [$projectName]");
-        }
+        $output->writeln(">>> Fzkc project [$projectName]");
 
         $castlesHostnames = [];
         $laravelsPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels');
@@ -59,14 +57,10 @@ class DevImportExternalsCommand extends BaseConsoleCmd
 
                 file_put_contents($outputTemplatePath, preg_replace(['@{%% FZKC_PROJECT_NAME %%}@', '@{%% FZKC_CASTLE_NAME %%}@', '@{%% FZKC_CASTLE_PORT %%}@'], [$projectName, $castleName, $castlePort], file_get_contents($outputTemplatePath)));
 
-                if (!$input->getOption('quiet')) {
-                    $output->writeln(">>> Castle [$castleName] external template imported <<<");
-                }
+                $output->writeln(">>> Castle [$castleName] external template imported <<<");
             }
             else {
-                if (!$input->getOption('quiet')) {
-                    $output->writeln(">>> Castle [$castleName] external template not imported <<<");
-                }
+                $output->writeln(">>> Castle [$castleName] external template not imported <<<");
             }
         }
 
@@ -101,9 +95,7 @@ class DevImportExternalsCommand extends BaseConsoleCmd
 
             $zone->addResourceRecord($a);
             
-            if (!$input->getOption('quiet')) {
-                $output->writeln(">>> Host [$castleHostname] added to db.external.space <<<");
-            }
+            $output->writeln(">>> Host [$castleHostname] added to db.external.space <<<");
         }
 
         file_put_contents($coreDnsZoneFilePath, ZoneBuilder::build($zone));

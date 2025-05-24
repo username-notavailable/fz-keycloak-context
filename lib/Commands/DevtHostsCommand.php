@@ -23,10 +23,8 @@ class DevtHostsCommand extends BaseConsoleCmd
         $projectName = basename(FZKC_CONSOLE_BASE_PATH);
         $contextEnvVars = $this->getContextEnvVars();
         
-        if (!$input->getOption('quiet')) {
-            $output->writeln(">>> Fzkc project [$projectName]");
-            $output->writeln(">>> hosts file <<<");
-        }
+        $output->writeln(">>> Fzkc project [$projectName]");
+        $output->writeln(">>> hosts file <<<");
 
         $output->writeln("### Hosts file [$projectName] ###");
 
@@ -42,14 +40,10 @@ class DevtHostsCommand extends BaseConsoleCmd
                 $ports[] = $port;
             }
 
-            $ports = implode(' ', $ports);
+            $ports = $this->envSubst(implode(' ', $ports), $contextEnvVars);
+            $hostname = $this->envSubst($hostname, $contextEnvVars);
 
-            foreach ($contextEnvVars as $envVarName => $envVarValue) {
-                $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
-                $hostname = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $hostname);
-            }
-
-            $output->writeln("$contextEnvVars[FZKC_NETWORK_GATEWAY_IP]\t$hostname\t# ports $ports");
+            $output->writeln(sprintf("%-20s %-45s # ports %-10s", $contextEnvVars['FZKC_NETWORK_GATEWAY_IP'], $hostname, $ports));
         }
 
         $laravelsPath = $this->makeDirectoryPath(FZKC_CONSOLE_BASE_PATH, 'laravels');
@@ -67,19 +61,10 @@ class DevtHostsCommand extends BaseConsoleCmd
                 $ports[] = $port;
             }
 
-            $ports = implode(' ', $ports);
+            $ports = $this->envSubst(implode(' ', $ports), $contextEnvVars, $castleEnvVars);
+            $hostname = $this->envSubst($hostname, $contextEnvVars, $castleEnvVars);
 
-            foreach ($contextEnvVars as $envVarName => $envVarValue) {
-                $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
-                $hostname = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $hostname);
-            }
-
-            foreach ($castleEnvVars as $envVarName => $envVarValue) {
-                $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
-                $hostname = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $hostname);
-            }
-
-            $output->writeln("$contextEnvVars[FZKC_NETWORK_GATEWAY_IP]\t$hostname\t# ports $ports");
+            $output->writeln(sprintf("%-20s %-45s # ports %-10s", $contextEnvVars['FZKC_NETWORK_GATEWAY_IP'], $hostname, $ports));
         }
 
         $coreDnsZoneFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'coredns', 'conf', 'db.external.space');
@@ -88,10 +73,6 @@ class DevtHostsCommand extends BaseConsoleCmd
             $file = file_get_contents($coreDnsZoneFilePath);
             $zone = Parser::parse('external.space.', $file);
             
-            foreach ($contextEnvVars as $envVarName => $envVarValue) {
-                $ports = preg_replace(['@\$\{' . $envVarName . '\}@'], $envVarValue, $ports);
-            }
-
             foreach ($zone->getResourceRecords() as $record) {
                 $data = $record->getRdata();
 
@@ -99,7 +80,7 @@ class DevtHostsCommand extends BaseConsoleCmd
                     $hostname = trim($record->getName(), '.');
 
                     if (!in_array($hostname, ['a.external.space', 'b.external.space'])) {
-                        $output->writeln("$contextEnvVars[FZKC_NETWORK_GATEWAY_IP]\t$hostname\t# nginx proxy_pass"); 
+                        $output->writeln(sprintf("%-20s %-45s # nginx proxy_pass", $contextEnvVars['FZKC_NETWORK_GATEWAY_IP'], $hostname));
                     }                   
                 }
             }
