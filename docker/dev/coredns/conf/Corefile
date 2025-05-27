@@ -10,8 +10,8 @@
 #    errors
 #}
 
-external.space:$FZKC_EXPOSED_PORT_DNS {
-    file /conf/db.external.space
+$FZKC_PROJECT_NAME.external.space:$FZKC_EXPOSED_PORT_DNS {
+    file /conf/db.$FZKC_PROJECT_NAME.external.space
     log
     errors
 }

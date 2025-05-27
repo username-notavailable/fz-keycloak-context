@@ -67,11 +67,11 @@ class DevtHostsCommand extends BaseConsoleCmd
             $output->writeln(sprintf("%-20s %-45s # ports %-10s", $contextEnvVars['FZKC_NETWORK_GATEWAY_IP'], $hostname, $ports));
         }
 
-        $coreDnsZoneFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'coredns', 'conf', 'db.external.space');
+        $coreDnsZoneFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'coredns', 'conf', 'db.' . $projectName . '.external.space');
 
         if (file_exists($coreDnsZoneFilePath)) {
             $file = file_get_contents($coreDnsZoneFilePath);
-            $zone = Parser::parse('external.space.', $file);
+            $zone = Parser::parse($projectName . '.external.space.', $file);
             
             foreach ($zone->getResourceRecords() as $record) {
                 $data = $record->getRdata();
@@ -79,7 +79,7 @@ class DevtHostsCommand extends BaseConsoleCmd
                 if ($data instanceof \Badcow\DNS\Rdata\A) {
                     $hostname = trim($record->getName(), '.');
 
-                    if (!in_array($hostname, ['a.external.space', 'b.external.space'])) {
+                    if (!in_array($hostname, ['a.' . $projectName . '.external.space', 'b.' . $projectName . '.external.space'])) {
                         $output->writeln(sprintf("%-20s %-45s # nginx proxy_pass", $contextEnvVars['FZKC_NETWORK_GATEWAY_IP'], $hostname));
                     }                   
                 }

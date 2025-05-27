@@ -51,8 +51,8 @@ class DevImportExternalsCommand extends BaseConsoleCmd
             if (file_exists($externalFilePath)) {
                 $castleEnvVars = $this->getCastleEnvVars($castleName);
                 $castlePort = $castleEnvVars['FZKC_CASTLE_PORT'];
-                $castlesHostnames[] = $castleName . '-' . $projectName . '.external.space';
-                $outputTemplatePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'nginx', 'etc', 'nginx', 'templates', $castleName . '-' . $projectName . '.external.space.conf.template');
+                $castlesHostnames[] = $castleName . '.' . $projectName . '.external.space';
+                $outputTemplatePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'nginx', 'etc', 'nginx', 'templates', $castleName . '.' . $projectName . '.external.space.conf.template');
                 copy($externalFilePath, $outputTemplatePath);
 
                 file_put_contents($outputTemplatePath, preg_replace(['@{%% FZKC_PROJECT_NAME %%}@', '@{%% FZKC_CASTLE_NAME %%}@', '@{%% FZKC_CASTLE_PORT %%}@'], [$projectName, $castleName, $castlePort], file_get_contents($outputTemplatePath)));
@@ -64,14 +64,14 @@ class DevImportExternalsCommand extends BaseConsoleCmd
             }
         }
 
-        $coreDnsZoneFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'coredns', 'conf', 'db.external.space');
+        $coreDnsZoneFilePath = $this->makeFilePath(FZKC_CONSOLE_BASE_PATH, 'docker', 'dev', 'coredns', 'conf', 'db.' . $projectName . '.external.space');
 
         if (!file_exists($coreDnsZoneFilePath)) {
             $serial = 1;
         }
         else {
             $file = file_get_contents($coreDnsZoneFilePath);
-            $zone = Parser::parse('external.space.', $file);
+            $zone = Parser::parse($projectName . '.external.space.', $file);
             $serial = 1;
 
             foreach ($zone->getResourceRecords() as $record) {
@@ -86,7 +86,7 @@ class DevImportExternalsCommand extends BaseConsoleCmd
             }
         }
 
-        $zone = $this->getExternalFileSign($contextEnvVars['FZKC_NETWORK_DNS_IP'], $serial);
+        $zone = $this->getExternalFileSign($projectName, $contextEnvVars['FZKC_NETWORK_DNS_IP'], $serial);
         
         foreach ($castlesHostnames as $castleHostname) {
             $a = new ResourceRecord();
@@ -95,7 +95,7 @@ class DevImportExternalsCommand extends BaseConsoleCmd
 
             $zone->addResourceRecord($a);
             
-            $output->writeln(">>> Host [$castleHostname] added to db.external.space <<<");
+            $output->writeln(">>> Host [$castleHostname] added to db.$projectName.external.space <<<");
         }
 
         file_put_contents($coreDnsZoneFilePath, ZoneBuilder::build($zone));
@@ -103,17 +103,17 @@ class DevImportExternalsCommand extends BaseConsoleCmd
         return Command::SUCCESS;
     }
 
-    protected function getExternalFileSign(string $dnsIP, string $serial) : Zone
+    protected function getExternalFileSign(string $projectName, string $dnsIP, string $serial) : Zone
     {
-        $zone = new Zone('external.space.');
+        $zone = new Zone($projectName . '.external.space.');
         $zone->setDefaultTtl(3600);
 
         $soa = new ResourceRecord();
         $soa->setName('@');
         $soa->setClass(Classes::INTERNET);
         $soa->setRdata(Factory::Soa(
-            'external.space.',
-            'post.external.space.',
+            $projectName . '.external.space.',
+            'post.' . $projectName . '.external.space.',
             $serial,
             7200,
             3600,
@@ -121,23 +121,26 @@ class DevImportExternalsCommand extends BaseConsoleCmd
             3600
         ));
 
+        $aHostname = 'a.' . $projectName . '.external.space.';
+        $bHostname = 'b.' . $projectName . '.external.space.';
+
         $ns1 = new ResourceRecord();
         $ns1->setName('@');
         $ns1->setClass(Classes::INTERNET);
-        $ns1->setRdata(Factory::Ns('a.external.space.'));
+        $ns1->setRdata(Factory::Ns($aHostname));
 
         $ns2 = new ResourceRecord;
         $ns2->setName('@');
         $ns2->setClass(Classes::INTERNET);
-        $ns2->setRdata(Factory::Ns('b.external.space.'));
+        $ns2->setRdata(Factory::Ns($bHostname));
 
         $a = new ResourceRecord();
-        $a->setName('a.external.space.');
+        $a->setName($aHostname);
         $a->setRdata(Factory::A($dnsIP));
         $a->setComment('This is a local ip.');
 
         $b = new ResourceRecord();
-        $b->setName('b.external.space.');
+        $b->setName($bHostname);
         $b->setRdata(Factory::A($dnsIP));
         $b->setComment('This is a local ip.');
 
