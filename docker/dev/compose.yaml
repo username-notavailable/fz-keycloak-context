@@ -12,6 +12,9 @@ include:
   - nginx.yaml
   - keycloak.yaml
   - coredns.yaml
+  - mongodb.yaml
+  - opensearch.yaml
+  - graylog.yaml
   
 networks:
   fzkc-net01:
@@ -83,5 +86,33 @@ volumes:
     driver_opts:
       type: none
       device: ./memcached/conf
+      o: bind
+
+  mongodb-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./mongodb/mongo_data
+      o: bind
+
+  mongodb-config:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./mongodb/mongo_config
+      o: bind
+
+  opensearch-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./opensearch/os_data
+      o: bind
+
+  graylog-journal:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./graylog/graylog_journal
       o: bind
   

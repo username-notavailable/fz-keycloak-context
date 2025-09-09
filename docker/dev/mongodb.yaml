@@ -1,0 +1,31 @@
+services:
+  mongodb:
+    cap_add:
+      - NET_ADMIN
+    image: mongo:8.0.13
+    container_name: ${FZKC_PROJECT_NAME}-mongodb-container
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: graylog
+      MONGO_INITDB_USER: mongodb
+      MONGO_INITDB_PWD: mongodb
+      #TZ: Europe/Rome
+    hostname: mongodb.${FZKC_PROJECT_NAME}.space
+    dns:
+      - 127.0.0.1
+    restart: always
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    ports:
+      - "${FZKC_EXPOSED_PORT_MONGODB}:${FZKC_EXPOSED_PORT_MONGODB}"
+    networks:
+      - fzkc-net01

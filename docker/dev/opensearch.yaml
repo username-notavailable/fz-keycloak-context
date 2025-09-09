@@ -1,0 +1,41 @@
+services:
+  opensearch:
+    cap_add:
+      - NET_ADMIN
+    image: opensearchproject/opensearch:2.15.0
+    container_name: ${FZKC_PROJECT_NAME}-opensearch-container
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
+      OPENSEARCH_JAVA_OPTS: -Xms2g -Xmx2g -Dorg.apache.lucene.store.MMapDirectory.enableMemorySegments=false
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: Fg6N#6a4t-Lf
+      DISABLE_INSTALL_DEMO_CONFIG: true
+      #TZ: Europe/Rome
+      cluster.name: opensearch.${FZKC_PROJECT_NAME}.space-cluster
+      node.name: opensearch.${FZKC_PROJECT_NAME}.space
+      discovery.type: single-node
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        soft: 262144
+        hard: 262144
+    #mem_limit: 2g
+    hostname: opensearch.${FZKC_PROJECT_NAME}.space
+    dns:
+      - 127.0.0.1
+    restart: always
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+      - ./opensearch/opensearch.yml:/usr/share/opensearch/config/opensearch.yml
+    ports:
+      - "${FZKC_EXPOSED_PORT_OPENSEARCH_API}:${FZKC_EXPOSED_PORT_OPENSEARCH_API}"
+      - "${FZKC_EXPOSED_PORT_OPENSEARCH_CLUSTER}:${FZKC_EXPOSED_PORT_OPENSEARCH_CLUSTER}"
+    networks:
+      - fzkc-net01

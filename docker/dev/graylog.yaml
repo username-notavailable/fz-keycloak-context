@@ -1,0 +1,66 @@
+# environment:
+# GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/config/node-id"
+# GRAYLOG_PASSWORD_SECRET: "${GRAYLOG_PASSWORD_SECRET:?Please configure GRAYLOG_PASSWORD_SECRET in the .env file}"
+# GRAYLOG_ROOT_PASSWORD_SHA2: "${GRAYLOG_ROOT_PASSWORD_SHA2:?Please configure GRAYLOG_ROOT_PASSWORD_SHA2 in the .env file}"
+# GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
+# GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:9000/"
+# GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch:9200"
+# GRAYLOG_MONGODB_URI: "mongodb://mongodb:27017/graylog"
+
+
+
+services:
+  graylog:
+    cap_add:
+      - NET_ADMIN
+    image: graylog/graylog:6.3.3-1
+    container_name: ${FZKC_PROJECT_NAME}-graylog-container
+    env_file:
+      - ./.env
+    environment:
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+      FZKC_PROJECT_NAME: ${FZKC_PROJECT_NAME}
+      COLUMNS: ${COLUMNS}
+      LINES: ${LINES}
+      TERM: ${TERM}
+      #GRAYLOG_DATANODE_NODE_ID_FILE: /usr/share/graylog/data/config/node-id
+      GRAYLOG_PASSWORD_SECRET: somepasswordpepper
+      GRAYLOG_HTTP_EXTERNAL_URI: "http://graylog.${FZKC_PROJECT_NAME}.space:${FZKC_EXPOSED_PORT_GRAYLOG_WEB}/"
+      GRAYLOG_ROOT_PASSWORD_SHA2: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8 # echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
+      GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:${FZKC_EXPOSED_PORT_GRAYLOG_WEB}"
+      GRAYLOG_ELASTICSEARCH_HOSTS: "http://opensearch.${FZKC_PROJECT_NAME}.space:${FZKC_EXPOSED_PORT_OPENSEARCH_API}"
+      GRAYLOG_MONGODB_URI: "mongodb://mongodb:mongodb@mongodb.${FZKC_PROJECT_NAME}.space:${FZKC_EXPOSED_PORT_MONGODB}/graylog"
+      #GRAYLOG_REPORT_DISABLE_SANDBOX: true
+      #GRAYLOG_TZ: Europe/Rome
+      #GRAYLOG_TIMEZONE: Europe/Rome
+      #GRAYLOG_ROOT_TIMEZONE: Europe/Rome
+      #TZ: Europe/Rome
+    hostname: graylog.${FZKC_PROJECT_NAME}.space
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    dns:
+      - 127.0.0.1
+    restart: always
+    depends_on:
+      - mongodb
+      - opensearch
+    volumes:
+      - graylog-journal:/usr/share/graylog/data/journal
+    ports:
+      # Graylog web interface and REST API
+      - "${FZKC_EXPOSED_PORT_GRAYLOG_WEB}:${FZKC_EXPOSED_PORT_GRAYLOG_WEB}"
+      # Syslog TCP
+      - "${FZKC_EXPOSED_PORT_GRAYLOG_SYSLOG_TCP}:${FZKC_EXPOSED_PORT_GRAYLOG_SYSLOG_TCP}/tcp"
+      # Syslog UDP
+      - "${FZKC_EXPOSED_PORT_GRAYLOG_SYSLOG_TCP}:${FZKC_EXPOSED_PORT_GRAYLOG_SYSLOG_TCP}/udp"
+      # GELF TCP
+      - "${FZKC_EXPOSED_PORT_GRAYLOG_GELF_TCP}:${FZKC_EXPOSED_PORT_GRAYLOG_GELF_TCP}/tcp"
+      # GELF UDP
+      - "${FZKC_EXPOSED_PORT_GRAYLOG_GELF_UDP}:${FZKC_EXPOSED_PORT_GRAYLOG_GELF_UDP}/udp"
+    networks:
+      - fzkc-net01

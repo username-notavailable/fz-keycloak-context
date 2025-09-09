@@ -1,0 +1,37 @@
+#cluster.name: docker-cluster
+
+# Bind to all interfaces because we don't know what IP address Docker will assign to us.
+network.host: 0.0.0.0
+
+# # minimum_master_nodes need to be explicitly set when bound on a public IP
+# # set to 1 to allow single node clusters
+# discovery.zen.minimum_master_nodes: 1
+
+# Setting network.host to a non-loopback address enables the annoying bootstrap checks. "Single-node" mode disables them again.
+
+
+#http.host: opensearch.${FZKC_PROJECT_NAME}.space # serve se vuoi che le API REST siano raggiungibili da un’interfaccia diversa da quella interna
+#transport.host: opensearch.${FZKC_PROJECT_NAME}.space # serve se vuoi separare la rete di cluster da quella pubblica (es. REST esposto verso l’esterno, ma il traffico di cluster confinato in una subnet privata).
+#network.host: opensearch.${FZKC_PROJECT_NAME}.space # imposta un valore globale (shortcut comodo)
+
+#xpack.security.enabled: true
+###xpack.security.transport.ssl.enabled: false
+
+#xpack.monitoring.enabled: true
+#xpack.monitoring.collection.enabled: true
+#xpack.license.self_generated.type: trial
+
+
+#http.cors.enabled: true
+#http.cors.allow-origin: '*'
+#bootstrap.memory_lock: true
+#discovery.seed_hosts: opensearch,elasticsearch2,elasticsearch3,elasticsearch4
+#cluster.initial_master_nodes: opensearch,elasticsearch2,elasticsearch3,elasticsearch4
+#discovery.type: single-node
+#action.auto_create_index: false
+
+
+gateway.auto_import_dangling_indices: true
+
+plugins.security.disabled: true
+plugins.security.ssl.http.enabled: false
