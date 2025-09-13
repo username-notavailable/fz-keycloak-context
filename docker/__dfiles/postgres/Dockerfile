@@ -13,7 +13,8 @@ apt-get install -y procps; \
 apt-get install -y bind9-dnsutils; \
 apt-get install -y letsencrypt; \
 apt-get install -y cron; \
-apt-get install -y jq;
+apt-get install -y jq; \
+apt-get install -y postgresql-postgis;
 
 COPY start.sh /start.sh
 COPY init_dns.sh /init_dns.sh
