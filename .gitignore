@@ -10,3 +10,12 @@ docker/dev/nginx/var/log/*
 
 docker/dev/postgres/var/lib/postgresql/data/*
 !docker/dev/postgres/var/lib/postgresql/data/.gitkeep
+
+docker/dev/mongodb/mongo_data/*
+!docker/dev/mongodb/mongo_data/.gitkeep
+
+docker/dev/opensearch/os_data/*
+!docker/dev/opensearch/os_data/.gitkeep
+
+docker/dev/graylog/graylog_journal/*
+!docker/dev/graylog/graylog_journal/.gitkeep
