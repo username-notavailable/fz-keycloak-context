@@ -19,3 +19,5 @@ docker/dev/opensearch/os_data/*
 
 docker/dev/graylog/graylog_journal/*
 !docker/dev/graylog/graylog_journal/.gitkeep
+
+docker/dev/redis/conf/running.conf
